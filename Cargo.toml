@@ -1,9 +1,17 @@
 [package]
-name = "sc-rust-sdk"
+name = "xpx_supercontracts_sdk"
 version = "0.1.0"
-authors = ["ProxymaX", "Evgeny Ukhanov <mrlsd@ya.ru>"]
+authors = ["ProxymaX Core Development Team", "Evgeny Ukhanov <evgeny@ukhanov.org.ua>"]
 description = "ProximaX Supercontracts Rust SDK"
 edition = "2018"
+homepage = "https://www.proximax.io/"
+documentation = "https://docs.rs/xpx-supercontracts-sdk"
+readme = "README.md"
+keywords = ["distributed", "blockchain", "sdk", "supercontract", "xpx", "proximax"]
+categories = ["cryptography", "sdk"]
+license = "Apache-2.0"
+repository = "https://github.com/proximax-storage/rust-xpx-supercontracts-sdk"
+
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }

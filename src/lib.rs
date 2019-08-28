@@ -1,29 +1,51 @@
+//! # XPX Supercontracts SDK
+//! The documentation describe basic functions and tools
+//! for implementation `XPX Supercontracts` based on
+//! `XPX Wasm VM` (WebAssembly Virtual Machine).
+//!
+//! Currently supported target: `wasm32-unknown-unknown`.
+//!
+//! ## Development flow
+//! * Check is installed target: `rustup target list | grep wasm32-unknown-unknown`
+//! * If target not install add it: ``rustup target add wasm32-unknown-unknown
+//! * * Create boilerplate supercontract app: `cargo new my-supercontract`
+//! * Add to `Cargo.toml`:
+//! ```
+//! [lib]
+//! crate-type = ["cdylib"]
+//!
+//! [dependencies]
+//! xpx_supercontracts_sdk = "0.1"
+//! ```
+//! * Here we go! Application ready to build. To build application: `cargo build --release --target wasm32-unknown-unknown`.
+//!
+//! ## Examples
+//!
+//! Most simple supercontract that ping VM and
+//! send debug message with result to VM.
+//!
+//! ```rust,no_run
+//! extern xpx_supercontracts_sdk;
+//! use xpx_supercontracts_sdk::{ping, debug_message};
+//!
+//! #[no_mangle]
+//! pub extern "C" fn app_main() -> i64 {
+//!     let ping_number: usize = 99;
+//!     let pong_result = ping(&ping_number);
+//!     let msg = format!("Supercontract Ping: {:?} and Pong: {:?}", ping_number, pong_result);
+//!     debug_message(msg);
+//!     return 0;
+//! }
+//! ```
+//!
 extern crate serde;
 extern crate serde_json;
+
+mod external;
 
 use std::collections::HashMap;
 use serde::{Serialize, Deserialize};
 
-pub mod sys {
-    extern "C" {
-        pub fn __ping(number: usize) -> i64;
-        pub fn __write_log(msg: *const u8, len: usize) -> i64;
-        pub fn save_to_storage(
-            file_ptr: *const u8,
-            file_len: usize,
-            data_ptr: *const u8,
-            data_len: usize,
-        ) -> i64;
-        pub fn save_sc_result(
-            file_ptr: *const u8,
-            file_len: usize,
-            data_ptr: *const u8,
-            data_len: usize,
-        ) -> i64;
-        pub fn get_from_storage(file_ptr: *const u8, file_len: usize, data: *mut u8) -> i64;
-        pub fn get_http(url: *const u8, url_len: usize, body: *mut u8) -> i64;
-    }
-}
 
 #[derive(Debug, Deserialize, Serialize)]
 struct HttpRequest {
@@ -37,69 +59,69 @@ struct HttpResponse {
     body: String,
 }
 
-
-#[no_mangle]
-pub extern "C" fn ping() -> i64 {
-    let res = unsafe { sys::__ping(99) };
-    return res;
+/// Send ping message to `WasmVM`. Successful result should be
+/// incremented value.
+///
+/// # Examples
+/// ```rust,no_run
+/// let respond = ping(10);
+/// assert_eq!(respond, 11);
+/// ```
+pub fn ping(msg: usize) -> i64 {
+    return unsafe { external::__ping(msg) };
 }
 
-#[no_mangle]
-pub extern "C" fn log_write() -> i64 {
-    let msg = format!("[LOG] Test message");
-    let msg = msg.as_bytes();
+/// Send debug message to `WasmVM`. It's convenient
+/// basic function for development debugging.
+/// Message that was sent will display in `WasmVM`
+/// stdout as information log message. It not affect
+/// basic Supercontract execution but should be
+/// removed from `release` version, because it
+/// will spend `Gas` (unit ticks).
+///
+/// # Examples
+/// ```rust,no_run
+/// debug_message("Debug message from Supercontract");
+/// ```
+pub fn debug_message(msg: String) {
+    let raw_msg = msg.as_bytes();
     unsafe {
-        sys::__write_log(msg.as_ptr(), msg.len());
+        external::__write_log(raw_msg.as_ptr(), raw_msg.len());
     };
-    return msg.len() as i64;
 }
 
-#[no_mangle]
-pub extern "C" fn storage_save() -> i64 {
-    let file_name = "test_file".as_bytes();
-    let file_data = "some data".as_bytes();
-    let res = unsafe {
-        sys::save_to_storage(
+pub fn storage_save(file_name: String, data: &[u8]) -> i64 {
+    let file_name = file_name.as_bytes();
+    return unsafe {
+        external::save_to_storage(
             file_name.as_ptr(),
             file_name.len(),
-            file_data.as_ptr(),
-            file_data.len(),
+            data.as_ptr(),
+            data.len(),
         )
     };
-    return res;
 }
 
-#[no_mangle]
-pub extern "C" fn save_result() -> i64 {
-    let file_name = "test_file".as_bytes();
-    let file_data = "some data".as_bytes();
-    let res = unsafe {
-        sys::save_sc_result(
+pub fn save_result(file_name: String, data: &[u8]) -> i64 {
+    let file_name = file_name.as_bytes();
+    return unsafe {
+        external::save_sc_result(
             file_name.as_ptr(),
             file_name.len(),
-            file_data.as_ptr(),
-            file_data.len(),
+            data.as_ptr(),
+            data.len(),
         )
     };
-    return res;
 }
-
-#[no_mangle]
-pub extern "C" fn storage_get() -> i64 {
-    let file_name = "test_file".as_bytes();
+/*
+pub fn storage_get(file_name: String) -> VEc<u8> {
+    let file_name = file_name.as_bytes();
     let data: &mut Vec<u8> = &mut vec![];
-    let res = unsafe {
-        let msg_len = sys::get_from_storage(file_name.as_ptr(), file_name.len(), data.as_mut_ptr());
-        let data_bytes = data.get_unchecked_mut(0..msg_len as usize);
-        let data_str = std::str::from_utf8(&data_bytes);
-        let msg = format!("RES: {:?} | LEN: {:?}", data_str, msg_len);
-        sys::__write_log(msg.as_bytes().as_ptr(), msg.as_bytes().len());
-        msg_len
+    return unsafe {
+        let msg_len = external::get_from_storage(file_name.as_ptr(), file_name.len(), data.as_mut_ptr());
+        let data_bytes = std::slice::from_raw_parts(data, msg_len);
+        data_bytes.to_vec()
     };
-    if res < 0 {
-        return -1;
-    }
-    return res as i64;
 }
 
 #[no_mangle]
@@ -125,3 +147,4 @@ pub extern "C" fn http_get() -> i64 {
     return res;
 }
 
+*/
