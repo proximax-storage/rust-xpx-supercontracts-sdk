@@ -10,7 +10,7 @@
 //! * If target not install add it: ``rustup target add wasm32-unknown-unknown
 //! * * Create boilerplate supercontract app: `cargo new my-supercontract`
 //! * Add to `Cargo.toml`:
-//! ```
+//! ```ignore
 //! [lib]
 //! crate-type = ["cdylib"]
 //!
@@ -25,13 +25,12 @@
 //! send debug message with result to VM.
 //!
 //! ```rust,no_run
-//! extern xpx_supercontracts_sdk;
 //! use xpx_supercontracts_sdk::{ping, debug_message};
 //!
 //! #[no_mangle]
 //! pub extern "C" fn app_main() -> i64 {
 //!     let ping_number: usize = 99;
-//!     let pong_result = ping(&ping_number);
+//!     let pong_result = ping(ping_number);
 //!     let msg = format!("Supercontract Ping: {:?} and Pong: {:?}", ping_number, pong_result);
 //!     debug_message(msg);
 //!     return 0;
@@ -43,9 +42,8 @@ extern crate serde_json;
 
 mod external;
 
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use serde::{Serialize, Deserialize};
-
 
 #[derive(Debug, Deserialize, Serialize)]
 struct HttpRequest {
@@ -64,6 +62,7 @@ struct HttpResponse {
 ///
 /// # Examples
 /// ```rust,no_run
+/// use xpx_supercontracts_sdk::ping;
 /// let respond = ping(10);
 /// assert_eq!(respond, 11);
 /// ```
@@ -81,7 +80,8 @@ pub fn ping(msg: usize) -> i64 {
 ///
 /// # Examples
 /// ```rust,no_run
-/// debug_message("Debug message from Supercontract");
+/// use xpx_supercontracts_sdk::debug_message;
+/// debug_message("Debug message from Supercontract".to_string());
 /// ```
 pub fn debug_message(msg: String) {
     let raw_msg = msg.as_bytes();
@@ -113,17 +113,28 @@ pub fn save_result(file_name: String, data: &[u8]) -> i64 {
         )
     };
 }
-/*
-pub fn storage_get(file_name: String) -> VEc<u8> {
+
+/// Read file from Storage and return file data bytes.
+/// File always located inside `/root/supercontracts/` directory.
+/// So it should be relative path like: `path/to/my/file.json`
+/// If file not exist or empty function return empty array.
+///
+/// # Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::storage_get;
+/// let file_data = storage_get("some_file.json".to_string());
+/// ```
+pub fn storage_get(file_name: String) -> Vec<u8> {
     let file_name = file_name.as_bytes();
     let data: &mut Vec<u8> = &mut vec![];
     return unsafe {
-        let msg_len = external::get_from_storage(file_name.as_ptr(), file_name.len(), data.as_mut_ptr());
-        let data_bytes = std::slice::from_raw_parts(data, msg_len);
+        let msg_len =
+            external::get_from_storage(file_name.as_ptr(), file_name.len(), data.as_mut_ptr());
+        let data_bytes = data.get_unchecked_mut(0..msg_len as usize);
         data_bytes.to_vec()
     };
 }
-
+/*
 #[no_mangle]
 pub extern "C" fn http_get() -> i64 {
     let mut headers: HashMap<String, String> = HashMap::new();

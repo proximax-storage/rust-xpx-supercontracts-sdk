@@ -14,5 +14,5 @@ extern "C" {
         data_len: usize,
     ) -> i64;
     pub fn get_from_storage(file_ptr: *const u8, file_len: usize, data: *mut u8) -> i64;
-    pub fn get_http(url: *const u8, url_len: usize, body: *mut u8) -> i64;
+//    pub fn get_http(url: *const u8, url_len: usize, body: *mut u8) -> i64;
 }
