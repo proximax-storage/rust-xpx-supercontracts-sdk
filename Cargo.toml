@@ -29,3 +29,7 @@ crate-type = ["cdylib"]
 [[example]]
 name = "http"
 crate-type = ["cdylib"]
+
+[[example]]
+name = "storage"
+crate-type = ["cdylib"]

@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use crate::external;
+use crate::statuses::{Error, Result};
 
 /// HTTP request data
 #[derive(Debug, Deserialize, Serialize)]
@@ -23,16 +24,16 @@ struct HttpResponse {
     body: String,
 }
 
-/// Send HTTPP requst with specifi parametres.
+/// Send HTTPP requst with specific parameters.
 ///
 /// # Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::http::http_get;
 /// ```
-pub fn http_get(request: &HttpRequest) -> Vec<u8> {
+pub fn http_get(request: &HttpRequest) -> Result<Vec<u8>> {
     let request_body = serde_json::to_vec(&request);
     if request_body.is_err() {
-        return vec![];
+        return Err(Error::SerializeJson);
     }
     let request_body = request_body.unwrap();
     let data: &mut Vec<u8> = &mut vec![];
@@ -40,6 +41,6 @@ pub fn http_get(request: &HttpRequest) -> Vec<u8> {
         let body_len =
             external::get_http(request_body.as_ptr(), request_body.len(), data.as_mut_ptr());
         let data_bytes = data.get_unchecked_mut(0..body_len as usize);
-        data_bytes.to_vec()
+        Ok(data_bytes.to_vec())
     };
 }

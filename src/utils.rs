@@ -1,6 +1,7 @@
 //! Basic utils functions for communication with `WasmVM`.
 
 use crate::external;
+use crate::statuses::Result;
 
 /// Send ping message to `WasmVM`. Successful result should be
 /// incremented value.
@@ -9,10 +10,10 @@ use crate::external;
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::utils::ping;
 /// let respond = ping(10);
-/// assert_eq!(respond, 11);
+/// assert_eq!(respond.unwrap(), 11);
 /// ```
-pub fn ping(msg: usize) -> i64 {
-    return unsafe { external::__ping(msg) };
+pub fn ping(msg: usize) -> Result<i64> {
+    return unsafe { Ok(external::__ping(msg)) };
 }
 
 /// Send debug message to `WasmVM`. It's convenient

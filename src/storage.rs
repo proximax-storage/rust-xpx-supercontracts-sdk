@@ -4,6 +4,7 @@
 //! So it should be relative path like: `path/to/my/file.json`
 
 use crate::external;
+use crate::statuses::Result;
 
 /// Save data to Storage. Return result status.
 /// File always located inside `/root/supercontracts/` directory.
@@ -13,18 +14,19 @@ use crate::external;
 /// ```rust,no_run
 /// let data = "some_data".as_bytes();
 /// use xpx_supercontracts_sdk::storage::storage_save;
-/// let result_status = storage_save("some_file.json".to_string(), data);
-/// assert_eq!(result_status, 0);
+/// let result_status = storage_save(&"some_file.json".to_string(), data);
+/// assert_eq!(result_status.unwrap(), 0);
 /// ```
-pub fn storage_save(file_name: String, data: &[u8]) -> i64 {
+pub fn storage_save(file_name: &String, data: &[u8]) -> Result<i64> {
     let file_name = file_name.as_bytes();
     return unsafe {
-        external::save_to_storage(
+        let res = external::save_to_storage(
             file_name.as_ptr(),
             file_name.len(),
             data.as_ptr(),
             data.len(),
-        )
+        );
+        Ok(res)
     };
 }
 
@@ -36,16 +38,17 @@ pub fn storage_save(file_name: String, data: &[u8]) -> i64 {
 /// # Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::storage::storage_get;
-/// let file_data = storage_get("some_file.json".to_string());
+/// let file_data = storage_get(&"some_file.json".to_string());
+/// assert_eq!(file_data.unwrap(), vec![0]);
 /// ```
-pub fn storage_get(file_name: String) -> Vec<u8> {
+pub fn storage_get(file_name: &String) -> Result<Vec<u8>> {
     let file_name = file_name.as_bytes();
     let data: &mut Vec<u8> = &mut vec![];
     return unsafe {
         let msg_len =
             external::get_from_storage(file_name.as_ptr(), file_name.len(), data.as_mut_ptr());
         let data_bytes = data.get_unchecked_mut(0..msg_len as usize);
-        data_bytes.to_vec()
+        Ok(data_bytes.to_vec())
     };
 }
 
@@ -61,17 +64,18 @@ pub fn storage_get(file_name: String) -> Vec<u8> {
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::storage::save_result;
 /// let data = "some_data".as_bytes();
-/// let result_status = save_result("some_file.json".to_string(), data);
-/// assert_eq!(result_status, 0);
+/// let result_status = save_result(&"some_file.json".to_string(), data);
+/// assert_eq!(result_status.unwrap(), 0);
 /// ```
-pub fn save_result(file_name: String, data: &[u8]) -> i64 {
+pub fn save_result(file_name: &String, data: &[u8]) -> Result<i64> {
     let file_name = file_name.as_bytes();
     return unsafe {
-        external::save_sc_result(
+        let res = external::save_sc_result(
             file_name.as_ptr(),
             file_name.len(),
             data.as_ptr(),
             data.len(),
-        )
+        );
+        Ok(res)
     };
 }

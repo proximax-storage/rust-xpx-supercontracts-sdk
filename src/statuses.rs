@@ -1,5 +1,12 @@
 //! Execution error statuses
 
+use std::result;
+pub type Result<T> = result::Result<T, self::Error>;
+
+/// Success status of function execution
+/// when function don't has own result.
+pub const STATUS_SUCCESS: i64 = 0;
+
 /// Result of unsuccessful supercontract execution.
 ///
 /// An execution error consists
@@ -41,9 +48,6 @@ impl From<Error> for ExecutionError {
 
 #[derive(Debug, Fail)]
 pub enum Error {
-    #[fail(display = "Save to storage function failed: AddFromBytes")]
-    FunctionSaveToStorageAddFromBytes = -13,
-
-    #[fail(display = "GetLocal failed: wrong index")]
-    FunctionGetLocalWrongIndex = -14,
+    #[fail(display = "Failed serialize the given data structure as a JSON byte ")]
+    SerializeJson = -1,
 }
