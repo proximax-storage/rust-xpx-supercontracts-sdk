@@ -1,0 +1,35 @@
+[package]
+name = "xpx_supercontracts_sdk"
+version = "0.1.0"
+authors = ["ProxymaX Core Development Team"]
+description = "ProximaX Supercontracts Rust SDK"
+edition = "2018"
+homepage = "https://www.proximax.io/"
+documentation = "https://docs.rs/xpx-supercontracts-sdk"
+readme = "README.md"
+keywords = ["distributed", "blockchain", "sdk", "supercontract", "xpx", "proximax"]
+categories = ["cryptography", "sdk"]
+license = "Apache-2.0"
+repository = "https://github.com/proximax-storage/rust-xpx-supercontracts-sdk"
+
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+failure = "0.1.5"
+
+[[example]]
+name = "ping"
+crate-type = ["cdylib"]
+
+[[example]]
+name = "debug"
+crate-type = ["cdylib"]
+
+[[example]]
+name = "http"
+crate-type = ["cdylib"]
+
+[[example]]
+name = "storage"
+crate-type = ["cdylib"]
