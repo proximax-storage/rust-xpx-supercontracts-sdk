@@ -1,6 +1,7 @@
 //! Basic Blockchain functions and getters
 
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 pub type NetworkType = u8;
 pub type EntityType = u16;
@@ -18,6 +19,11 @@ pub type PubKey = [u8; 32];
 pub type AssetId = u64;
 pub type Duration = i64;
 pub type MosaicSupplyType = u8;
+pub type MetadataModificationType = u8;
+pub type HashType = u8;
+pub type Message = [u8];
+pub type OfferType = u8;
+pub type TransactionID = [u8; 32];
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AbstractTransaction {
@@ -63,43 +69,205 @@ pub struct MosaicProperty {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AddressAlias {
-	address: Option<Address>,
-	namespace_id: Option<NamespaceId>,
-	action_type: AliasActionType,
+	pub address: Option<Address>,
+	pub namespace_id: Option<NamespaceId>,
+	pub action_type: AliasActionType,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct MosaicAlias {
-	mosaic_id: Option<MosaicId>,
-	namespace_id: Option<NamespaceId>,
-	action_type: AliasActionType,
+	pub mosaic_id: Option<MosaicId>,
+	pub namespace_id: Option<NamespaceId>,
+	pub action_type: AliasActionType,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AddExchangeOffer {
-	add_offers: Option< []AddOffer>,
+	pub add_offers: Option< []AddOffer >,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ExchangeOffer {
-	offer: Option<[]ExchangeConfirmation>,
+	pub offer: Option<[]ExchangeConfirmation >,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Transfer {
-	pub_key: PubKey,
-	asset_id: AssetId,
-	amount: i64,
+	pub pub_key: PubKey,
+	pub asset_id: AssetId,
+	pub amount: i64,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct RemoveExchangeOffer {
-	remove_offers: Option<[]RemoveOffer>,
+	pub remove_offers: Option<[]RemoveOffer >,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct MosaicSupplyChange{
-	asset_id: AssetId,
-	supply_type: MosaicSupplyType,
-	delta: Duration,
+pub struct MosaicSupplyChange {
+	pub asset_id: AssetId,
+	pub supply_type: MosaicSupplyType,
+	pub delta: Duration,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct RegisterRootNamespace {
+	pub namespace_name: String,
+	pub duration: Duration,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct RegisterSubNamespace {
+	pub namespace_name: String,
+	pub parent_id: NamespaceId,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Mosaic {
+	pub asset_id: AssetId,
+	pub amount: Amount,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SecretLock {
+	pub mosaic: Option<Mosaic>,
+	pub duration: Duration,
+	pub secret: Option<Secret>,
+	pub recipient: Option<Address>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Proof {
+	pub data: [u8],
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SecretProof {
+	pub hash_type: HashType,
+	pub proof: Option<Proof>,
+	pub recipient: Option<Address>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct TransferWithNamespace {
+	pub recipient: Option<NamespaceId>,
+	pub mosaics: Option<[]Mosaic >,
+	pub message: Message,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ModifyMetadataAddress {
+	pub address: Option<Address>,
+	pub modifications: Option<[]MetadataModification >,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ModifyMetadataMosaic {
+	pub mosaic_id: Option<MosaicId>,
+	pub modifications: Option<[]MetadataModification >,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct MetadataModification {
+	modification_type: MetadataModificationType,
+	key: String,
+	value: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ModifyMetadataNamespace {
+	pub namespace_id: NamespaceId,
+	pub modifications: Option<[]MetadataModification >,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct OfferInfo {
+	pub offer_type: OfferType,
+	pub owner: Option<PublicAccount>,
+	pub mosaic: Option<Mosaic>,
+	pub price_numerator: Amount,
+	pub price_denominator: Amount,
+	pub deadline: Height,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UserExchangeInfo {
+	pub owner: Option<PublicAccount>,
+	pub offers: HashMap<OfferType, HashMap<MosaicId, HashMapOption<OfferInfo>>>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetAccountExchangeInfo {
+	pub account: Option<PublicAccount>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetExchangeOfferByAssetId {
+	pub asset_id: AssetId,
+	pub offer_type: OfferType,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct MosaicInfo {
+	mosaic_id: Option<MosaicId>,
+	supply: Amount,
+	height: Height,
+	owner: Option<PublicAccount>,
+	revision: u32,
+	properties: Option<MosaicProperties>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetMosaicInfo {
+	pub mosaic_id: Option<MosaicId>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetMosaicInfos {
+	pub msc_ids: Option<[]MosaicId >,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct MosaicName {
+	pub mosaic_id: Option<MosaicId>,
+	pub names: [String],
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetMosaicsNames {
+	pub msc_ids: Option<[]MosaicId >,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetTransaction {
+	pub id: TransactionID,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetTransactions {
+	pub ids: []TransactionID,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct TransactionStatus {
+	deadline: Option<Deadline>,
+	group: String,
+	status: String,
+	hash: Option<Hash>,
+	height: Height,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetTransactionStatus {
+	pub id: TransactionID,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetTransactionStatuses {
+	pub ids: []TransactionID,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GetTransactionEffectiveFee {
+	pub id: TransactionID,
 }
