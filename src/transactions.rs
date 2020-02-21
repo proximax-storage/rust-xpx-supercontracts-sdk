@@ -384,7 +384,6 @@ pub fn secret_proof(params: &SecretProof) -> FunctionResult {
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		transfer_with_namespace,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::TransferWithNamespace;
@@ -410,7 +409,6 @@ pub fn transfer_with_namespace(params: &TransferWithNamespace) -> FunctionResult
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		modify_metadata_address,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::ModifyMetadataAddress;
@@ -435,7 +433,6 @@ pub fn modify_metadata_address(params: &ModifyMetadataAddress) -> FunctionResult
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		modify_metadata_mosaic,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::ModifyMetadataMosaic;
@@ -460,7 +457,6 @@ pub fn modify_metadata_mosaic(params: &ModifyMetadataMosaic) -> FunctionResult {
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		modify_metadata_namespace,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::ModifyMetadataNamespace;
@@ -485,7 +481,6 @@ pub fn modify_metadata_namespace(params: &ModifyMetadataNamespace) -> FunctionRe
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		get_account_exchange_info,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::{GetAccountExchangeInfo, UserExchangeInfo};
@@ -493,7 +488,7 @@ pub fn modify_metadata_namespace(params: &ModifyMetadataNamespace) -> FunctionRe
 /// let params = GetAccountExchangeInfo{
 /// 	account: None,
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_account_exchange_info(&params);
 /// if result.is_err() {
 ///     // Some error handling
@@ -510,7 +505,6 @@ pub fn get_account_exchange_info(params: &GetAccountExchangeInfo) -> Result<User
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		get_exchange_offer_by_asset_id,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::{GetExchangeOfferByAssetId, OfferInfo};
@@ -519,7 +513,7 @@ pub fn get_account_exchange_info(params: &GetAccountExchangeInfo) -> Result<User
 /// 	asset_id: 10,
 /// 	offer_type: 20,
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_exchange_offer_by_asset_id(&params);
 /// if result.is_err() {
 ///     // Some error handling
@@ -544,7 +538,7 @@ pub fn get_exchange_offer_by_asset_id(params: &GetExchangeOfferByAssetId) -> Res
 /// let params = GetMosaicInfo{
 /// 	mosaic_id: None,
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_mosaic_info(&params);
 /// if result.is_err() {
 ///     // Some error handling
@@ -569,7 +563,7 @@ pub fn get_mosaic_info(params: &GetMosaicInfo) -> Result<Option<MosaicInfo>> {
 /// let params = GetMosaicInfos{
 /// 	msc_ids: None,
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_mosaic_infos(&params);
 /// if result.is_err() {
 ///     // Some error handling
@@ -594,7 +588,7 @@ pub fn get_mosaic_infos(params: &GetMosaicInfos) -> Result<Option<Vec<MosaicInfo
 /// let params = GetMosaicsNames{
 /// 	msc_ids: None,
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_mosaics_names(&params);
 /// if result.is_err() {
 ///     // Some error handling
@@ -614,38 +608,22 @@ pub fn get_mosaics_names(params: &GetMosaicsNames) -> Result<Option<Vec<MosaicNa
 ///		flush,
 ///		get_transaction,
 /// };
-/// use xpx_supercontracts_sdk::transactions_type::GetTransaction;
+/// use xpx_supercontracts_sdk::statuses::Result;
+/// use xpx_supercontracts_sdk::transactions_type::{GetTransaction, DriveFsTransaction};
 ///
 /// let params = GetTransaction{
 /// 	id: [0; 32],
 /// };
-/// // Add transaction to Transactions Pool
-/// let _ = get_transaction(&params);
+/// // Get info data
+/// let tx_result: Result<DriveFsTransaction> = get_transaction(&params);
+/// if tx_result.is_err() {
+/// 	// Handle error
+/// }
+/// let tx = tx_result.unwrap();
 /// ```
 ///
 pub fn get_transaction<T: SignedTransaction + DeserializeOwned>(params: &GetTransaction) -> Result<T> {
 	call_external_func(params, external::get_transaction)
-}
-
-/// Get data via **GetTransactions**
-/// 
-/// ## Examples
-/// ```rust,no_run
-/// use xpx_supercontracts_sdk::transactions::{
-///		flush,
-///		get_transactions,
-/// };
-/// use xpx_supercontracts_sdk::transactions_type::GetTransactions;
-///
-/// let params = GetTransactions{
-/// 	ids: vec!([0; 32]),
-/// };
-/// // Add transaction to Transactions Pool
-/// let _ = get_transactions(&params);
-/// ```
-///
-pub fn get_transactions<T: SignedTransaction + DeserializeOwned>(params: &GetTransactions) -> Result<Vec<T>> {
-	call_external_func(params, external::get_transactions)
 }
 
 /// Get data via **GetTransactionStatus**
@@ -661,9 +639,9 @@ pub fn get_transactions<T: SignedTransaction + DeserializeOwned>(params: &GetTra
 /// let params = GetTransactionStatus{
 /// 	id: [0; 32],
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_transaction_status(&params);
-/// let info: Option<TransactionStatus> = result.unwrap();
+/// let info = result.unwrap();
 /// ```
 ///
 pub fn get_transaction_status(params: &GetTransactionStatus) -> Result<Option<TransactionStatus>> {
@@ -675,7 +653,6 @@ pub fn get_transaction_status(params: &GetTransactionStatus) -> Result<Option<Tr
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		get_transaction_statuses,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::{GetTransactionStatuses, TransactionStatus};
@@ -683,7 +660,7 @@ pub fn get_transaction_status(params: &GetTransactionStatus) -> Result<Option<Tr
 /// let params = GetTransactionStatuses{
 /// 	ids: vec!([0;32]),
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_transaction_statuses(&params);
 /// let info: Option<Vec<TransactionStatus>> = result.unwrap();
 /// ```
@@ -697,7 +674,6 @@ pub fn get_transaction_statuses(params: &GetTransactionStatuses) -> Result<Optio
 /// ## Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::transactions::{
-///		flush,
 ///		get_transaction_effective_fee,
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::{GetTransactionEffectiveFee};
@@ -705,9 +681,9 @@ pub fn get_transaction_statuses(params: &GetTransactionStatuses) -> Result<Optio
 /// let params = GetTransactionEffectiveFee{
 /// 	id: [0;32],
 /// };
-/// // Add transaction to Transactions Pool
+/// // Get info data
 /// let result = get_transaction_effective_fee(&params);
-/// let info: i64 = result.unwrap();
+/// let info = result.unwrap();
 /// ```
 ///
 pub fn get_transaction_effective_fee(params: &GetTransactionEffectiveFee) -> Result<i64> {

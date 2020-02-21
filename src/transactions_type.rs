@@ -311,7 +311,57 @@ pub struct GetTransactionEffectiveFee {
 /// from Blockchain. 
 pub trait SignedTransaction {
 	fn id(&self) -> TransactionID;
-	fn transaction_type() -> TransactionType;
-	fn signer() -> PubKey;
-	fn signature() -> Vec<u8>;
+	fn transaction_type(&self) -> TransactionType;
+	fn signer(&self) -> PubKey;
+	fn signature(&self) -> Vec<u8>;
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Action {
+	pub hash: Hash,
+	pub action_type: i64,
+	pub size: u64,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct DriveFsTransaction {
+	pub id: TransactionID,
+	pub transaction_type: TransactionType,
+	pub signer: PubKey,
+	pub signature: Vec<u8>,
+	pub drive_id: Hash,
+	pub add_actions: Option<Vec<Action>>,
+	pub remove_actions: Option<Vec<Action>>,
+}
+
+impl DriveFsTransaction {
+	pub fn drive_id(&self) -> Hash {
+		self.drive_id
+	}
+
+	pub fn add_actions(&self) -> Option<Vec<Action>> {
+		self.add_actions.clone()
+	}
+
+	pub fn remove_actions(&self) -> Option<Vec<Action>> {
+		self.remove_actions.clone()
+	}
+}
+
+impl SignedTransaction for DriveFsTransaction {
+	fn id(&self) -> TransactionID {
+		self.id
+	}
+
+	fn transaction_type(&self) -> TransactionType {
+		self.transaction_type
+	}
+
+	fn signer(&self) -> PubKey {
+		self.signer
+	}
+
+	fn signature(&self) -> Vec<u8> {
+		self.signature.clone()
+	}
 }
