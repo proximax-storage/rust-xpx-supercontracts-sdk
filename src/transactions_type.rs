@@ -307,14 +307,6 @@ pub struct GetTransactionEffectiveFee {
 // Transactions
 //==========================================
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct MosaicDefinitionTransaction  {
-	pub basic_transction: AbstractTransaction,
-	pub mosaic_properties: Option<MosaicProperties>,
-	pub mosaic_nonce: u32,
-	pub mosaic_id: Option<MosaicId>,
-}
-
 pub trait SignedTransaction {
 	fn id(&self) -> TransactionID;
 	fn transaction_type() -> TransactionType;

@@ -80,4 +80,79 @@ extern "C" {
 		data_len: usize,
 		transaction: *mut u8,
 	) -> i64;
+	pub fn address_alias(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn mosaic_alias(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn add_exchange_offer(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn exchange_offer(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn transfer(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn remove_exchange_offer(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn mosaic_supply_change(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;	
+	pub fn register_root_namespace(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn register_sub_namespace(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn secret_lock(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn secret_proof(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn transfer_with_namespace(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn modify_metadata_address(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn modify_metadata_mosaic(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn modify_metadata_namespace(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
 }
