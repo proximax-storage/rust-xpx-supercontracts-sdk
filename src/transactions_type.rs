@@ -1,4 +1,4 @@
-//! Basic Blockchain functions and getters
+//! Basic Transactions types for Blockchain functions and getters
 
 use std::collections::HashMap;
 
@@ -301,4 +301,16 @@ pub struct GetTransactionStatuses {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct GetTransactionEffectiveFee {
 	pub id: TransactionID,
+}
+
+//==========================================
+// Transactions
+//==========================================
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct MosaicDefinitionTransaction {
+	pub basic_transction: AbstractTransaction,
+	pub mosaic_properties: Option<MosaicProperties>,
+	pub mosaic_nonce: u32,
+	pub mosaic_id: Option<MosaicId>,
 }

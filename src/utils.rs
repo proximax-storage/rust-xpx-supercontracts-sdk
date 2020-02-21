@@ -1,7 +1,7 @@
 //! Basic utils functions for communication with `WasmVM`.
 
 use crate::external;
-use crate::statuses::Result;
+use crate::statuses::FunctionResult;
 
 /// Send ping message to `WasmVM`. Successful result should be
 /// incremented value. Useful for most simple request/response
@@ -13,7 +13,7 @@ use crate::statuses::Result;
 /// let respond = ping(10);
 /// assert_eq!(respond.unwrap(), 11);
 /// ```
-pub fn ping(msg: usize) -> Result<i64> {
+pub fn ping(msg: usize) -> FunctionResult {
     return unsafe { Ok(external::__ping(msg)) };
 }
 

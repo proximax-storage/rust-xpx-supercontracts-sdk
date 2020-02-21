@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use crate::external;
-use crate::statuses::{Error, Result};
+use crate::statuses::{Error, MultipleFunctionResult};
 
 /// HTTP request data
 #[derive(Debug, Deserialize, Serialize)]
@@ -30,7 +30,7 @@ struct HttpResponse {
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::http::http_get;
 /// ```
-pub fn http_get(request: &HttpRequest) -> Result<Vec<u8>> {
+pub fn http_get(request: &HttpRequest) -> MultipleFunctionResult {
     let request_body = serde_json::to_vec(&request);
     if request_body.is_err() {
         return Err(Error::SerializeJson);

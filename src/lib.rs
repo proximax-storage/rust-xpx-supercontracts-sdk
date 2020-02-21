@@ -52,7 +52,7 @@
 //!     let ping_number: usize = 99;
 //!     let pong_result = ping(ping_number);
 //!     let msg = format!("Supercontract Ping: {:?} and Pong: {:?}", ping_number, pong_result);
-//!     debug_message(msg);
+//!     debug_message(&msg);
 //!     return 0;
 //! }
 //! ```
@@ -68,3 +68,4 @@ pub mod statuses;
 pub mod storage;
 pub mod utils;
 pub mod transactions;
+pub mod transactions_type;
