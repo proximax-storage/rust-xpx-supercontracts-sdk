@@ -46,6 +46,7 @@ impl From<Error> for ExecutionError {
     }
 }
 
+#[repr(i8)]
 #[derive(Debug, Fail)]
 pub enum Error {
     #[fail(display = "Failed serialize the given data structure as a JSON byte ")]
