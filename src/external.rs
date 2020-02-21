@@ -55,4 +55,29 @@ extern "C" {
 		data_len: usize,
 		transaction: *mut u8,
 	) -> i64;
+	pub fn get_transaction(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_transactions(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_transaction_status(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_transaction_statuses(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_transaction_effective_fee(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
 }

@@ -25,7 +25,7 @@ pub type HashType = u8;
 pub type Message = Vec<u8>;
 pub type OfferType = u8;
 pub type TransactionID = [u8; 32];
-
+pub type TransactionType = u8;
 pub type Signature = [u8; 64];
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -308,9 +308,16 @@ pub struct GetTransactionEffectiveFee {
 //==========================================
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct MosaicDefinitionTransaction {
+pub struct MosaicDefinitionTransaction  {
 	pub basic_transction: AbstractTransaction,
 	pub mosaic_properties: Option<MosaicProperties>,
 	pub mosaic_nonce: u32,
 	pub mosaic_id: Option<MosaicId>,
+}
+
+pub trait SignedTransaction {
+	fn id(&self) -> TransactionID;
+	fn transaction_type() -> TransactionType;
+	fn signer() -> PubKey;
+	fn signature() -> Vec<u8>;
 }

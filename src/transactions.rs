@@ -1,41 +1,11 @@
 //! Basic Blockchain functions and getters
 
-use serde::{de::DeserializeOwned, Serialize};
+use serde::de::DeserializeOwned;
 
 use crate::external;
-use crate::statuses::{Error, FunctionResult, Result};
-use crate::transactions_type::{GetAccountExchangeInfo, GetExchangeOfferByAssetId, GetMosaicInfo, GetMosaicInfos, GetMosaicsNames, MosaicDefinition, MosaicDefinitionTransaction, MosaicInfo, MosaicName, OfferInfo, UserExchangeInfo};
-
-/// Extrnral function type definition for call closure func 
-type ExternalFn = unsafe extern "C" fn(
-	data_ptr: *const u8,
-	data_len: usize,
-	transaction: *mut u8,
-) -> i64;
-
-/// External functions call wrapper. It serialize input data
-/// and deserialize output data after raw call of external function
-fn call_external_func<T, U>(params: &T, extenral_fn: ExternalFn) -> Result<U>
-	where T: Serialize, U: DeserializeOwned {
-	let fn_param = serde_json::to_vec(&params);
-	if fn_param.is_err() {
-		return Err(Error::SerializeJson);
-	}
-
-	let fn_params_body = fn_param.unwrap();
-	let fn_result = unsafe {
-		let fn_result: &mut Vec<u8> = &mut vec![];
-		let fn_result_len = extenral_fn(fn_params_body.as_ptr(), fn_params_body.len(), fn_result.as_mut_ptr());
-		let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
-		fn_data_bytes.to_vec()
-	};
-
-	let result = serde_json::from_slice(&fn_result[..]);
-	if result.is_err() {
-		return Err(Error::DeserializeJson);
-	}
-	Ok(result.unwrap())
-}
+use crate::statuses::{FunctionResult, Result};
+use crate::tools::call::call_external_func;
+use crate::transactions_type::*;
 
 pub fn flush() -> FunctionResult {
 	return unsafe { Ok(external::flush()) };
@@ -46,101 +16,41 @@ pub fn mosaic_definition(params: &MosaicDefinition) -> Result<MosaicDefinitionTr
 }
 
 pub fn get_account_exchange_info(params: &GetAccountExchangeInfo) -> Result<UserExchangeInfo> {
-	let fn_param = serde_json::to_vec(&params);
-	if fn_param.is_err() {
-		return Err(Error::SerializeJson);
-	}
-
-	let fn_params_body = fn_param.unwrap();
-	let fn_result = unsafe {
-		let fn_result: &mut Vec<u8> = &mut vec![];
-		let fn_result_len = external::get_account_exchange_info(fn_params_body.as_ptr(), fn_params_body.len(), fn_result.as_mut_ptr());
-		let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
-		fn_data_bytes.to_vec()
-	};
-	let result = serde_json::from_slice(&fn_result[..]);
-	if result.is_err() {
-		return Err(Error::DeserializeJson);
-	}
-	Ok(result.unwrap())
+	call_external_func(params, external::get_account_exchange_info)
 }
 
 pub fn get_exchange_offer_by_asset_id(params: &GetExchangeOfferByAssetId) -> Result<OfferInfo> {
-	let fn_param = serde_json::to_vec(&params);
-	if fn_param.is_err() {
-		return Err(Error::SerializeJson);
-	}
-
-	let fn_params_body = fn_param.unwrap();
-	let fn_result = unsafe {
-		let fn_result: &mut Vec<u8> = &mut vec![];
-		let fn_result_len = external::get_exchange_offer_by_asset_id(fn_params_body.as_ptr(), fn_params_body.len(), fn_result.as_mut_ptr());
-		let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
-		fn_data_bytes.to_vec()
-	};
-	let result = serde_json::from_slice(&fn_result[..]);
-	if result.is_err() {
-		return Err(Error::DeserializeJson);
-	}
-	Ok(result.unwrap())
+	call_external_func(params, external::get_exchange_offer_by_asset_id)
 }
 
 pub fn get_mosaic_info(params: &GetMosaicInfo) -> Result<Option<MosaicInfo>> {
-	let fn_param = serde_json::to_vec(&params);
-	if fn_param.is_err() {
-		return Err(Error::SerializeJson);
-	}
-
-	let fn_params_body = fn_param.unwrap();
-	let fn_result = unsafe {
-		let fn_result: &mut Vec<u8> = &mut vec![];
-		let fn_result_len = external::get_mosaic_info(fn_params_body.as_ptr(), fn_params_body.len(), fn_result.as_mut_ptr());
-		let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
-		fn_data_bytes.to_vec()
-	};
-	let result = serde_json::from_slice(&fn_result[..]);
-	if result.is_err() {
-		return Err(Error::DeserializeJson);
-	}
-	Ok(result.unwrap())
+	call_external_func(params, external::get_mosaic_info)
 }
 
 pub fn get_mosaic_infos(params: &GetMosaicInfos) -> Result<Option<Vec<MosaicInfo>>> {
-	let fn_param = serde_json::to_vec(&params);
-	if fn_param.is_err() {
-		return Err(Error::SerializeJson);
-	}
-
-	let fn_params_body = fn_param.unwrap();
-	let fn_result = unsafe {
-		let fn_result: &mut Vec<u8> = &mut vec![];
-		let fn_result_len = external::get_mosaic_infos(fn_params_body.as_ptr(), fn_params_body.len(), fn_result.as_mut_ptr());
-		let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
-		fn_data_bytes.to_vec()
-	};
-	let result = serde_json::from_slice(&fn_result[..]);
-	if result.is_err() {
-		return Err(Error::DeserializeJson);
-	}
-	Ok(result.unwrap())
+	call_external_func(params, external::get_mosaic_infos)
 }
 
 pub fn get_mosaics_names(params: &GetMosaicsNames) -> Result<Option<Vec<MosaicName>>> {
-	let fn_param = serde_json::to_vec(&params);
-	if fn_param.is_err() {
-		return Err(Error::SerializeJson);
-	}
+	call_external_func(params, external::get_mosaics_names)
+}
 
-	let fn_params_body = fn_param.unwrap();
-	let fn_result = unsafe {
-		let fn_result: &mut Vec<u8> = &mut vec![];
-		let fn_result_len = external::get_mosaics_names(fn_params_body.as_ptr(), fn_params_body.len(), fn_result.as_mut_ptr());
-		let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
-		fn_data_bytes.to_vec()
-	};
-	let result = serde_json::from_slice(&fn_result[..]);
-	if result.is_err() {
-		return Err(Error::DeserializeJson);
-	}
-	Ok(result.unwrap())
+pub fn get_transaction<T: SignedTransaction + DeserializeOwned>(params: &GetTransaction) -> Result<T> {
+	call_external_func(params, external::get_transaction)
+}
+
+pub fn get_transactions<T: SignedTransaction + DeserializeOwned>(params: &GetTransactions) -> Result<Vec<T>> {
+	call_external_func(params, external::get_transactions)
+}
+
+pub fn get_transaction_status(params: &GetTransactionStatus) -> Result<Option<TransactionStatus>> {
+	call_external_func(params, external::get_transaction_status)
+}
+
+pub fn get_transaction_statuses(params: &GetTransactionStatuses) -> Result<Option<Vec<TransactionStatus>>> {
+	call_external_func(params, external::get_transaction_statuses)
+}
+
+pub fn get_transaction_effective_fee(params: &GetTransactionEffectiveFee) -> Result<i64> {
+	call_external_func(params, external::get_transaction_effective_fee)
 }
