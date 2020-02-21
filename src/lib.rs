@@ -22,7 +22,7 @@
 //! ## Notes
 //! Supercontract functions should be
 //! external with specific attributes:
-//! ```ingore
+//! ```ignore
 //! use xpx_supercontracts_sdk::utils::{ping, debug_message};
 //!
 //! #[no_mangle]

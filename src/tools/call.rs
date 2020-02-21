@@ -1,7 +1,11 @@
+//! Basic additional toolkit for SuperContract functions 
+//!
+
 use serde::{de::DeserializeOwned, Serialize};
 use crate::statuses::{Error, Result};
 
-/// Extrnral function type definition for call closure func 
+/// External function type definition for call 
+/// closure external FFI functions 
 type ExternalFn = unsafe extern "C" fn(
 	data_ptr: *const u8,
 	data_len: usize,
@@ -9,7 +13,13 @@ type ExternalFn = unsafe extern "C" fn(
 ) -> i64;
 
 /// External functions call wrapper. It serialize input data
-/// and deserialize output data after raw call of external function
+/// and deserialize output data after raw call of external function.
+/// It support any kind ofr external functions to wrap for basic flow
+/// for SuperContract functions with specific flow like this:
+/// * serialize input data
+/// * invoke external function with serialized function parameters
+/// * fetch external function result
+/// * deserialize external function to specific type for SuperContract function 
 pub fn call_external_func<T, U>(params: &T, extenral_fn: ExternalFn) -> Result<U>
 	where T: Serialize, U: DeserializeOwned {
 	let fn_param = serde_json::to_vec(&params);

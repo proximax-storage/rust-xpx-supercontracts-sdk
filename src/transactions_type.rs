@@ -1,4 +1,7 @@
-//! Basic Transactions types for Blockchain functions and getters
+//! # Basic Transactions types for Blockchain functions and getters
+//! 
+//! Most common representations for Blockchain transactions type,
+//! traits, and informations getters.
 
 use std::collections::HashMap;
 
@@ -50,7 +53,7 @@ pub struct AbstractTransaction {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct MosaicDefinition {
 	pub nonce: u32,
-	pub owner_public_key: Vec<u32>,
+	pub owner_public_key: Vec<u8>,
 	pub mosaic_props: Option<MosaicProperties>,
 }
 
@@ -303,10 +306,9 @@ pub struct GetTransactionEffectiveFee {
 	pub id: TransactionID,
 }
 
-//==========================================
-// Transactions
-//==========================================
-
+/// # Transactions
+/// **SignedTransaction** is common interface for transactions data
+/// from Blockchain. 
 pub trait SignedTransaction {
 	fn id(&self) -> TransactionID;
 	fn transaction_type() -> TransactionType;

@@ -1,4 +1,4 @@
-// Example for `http_get` WasmVM function.
+/// Example for `http_get` WasmVM function.
 use std::collections::HashMap;
 use xpx_supercontracts_sdk::http::{http_get, HttpRequest};
 
