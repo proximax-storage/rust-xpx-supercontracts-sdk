@@ -30,4 +30,29 @@ extern "C" {
 		data_len: usize,
 		transaction: *mut u8,
 	) -> i64;
+	pub fn get_account_exchange_info(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_exchange_offer_by_asset_id(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_mosaic_info(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_mosaic_infos(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
+	pub fn get_mosaics_names(
+		data_ptr: *const u8,
+		data_len: usize,
+		transaction: *mut u8,
+	) -> i64;
 }
