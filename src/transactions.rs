@@ -24,7 +24,7 @@ use serde::de::DeserializeOwned;
 
 use crate::external;
 use crate::statuses::{FunctionResult, Result};
-use crate::tools::call::call_external_func;
+use crate::tools::call::{call_external_func, simple_call_external_func};
 use crate::transactions_type::*;
 
 /// Flush send immediately Transactions from current 
@@ -94,7 +94,7 @@ pub fn flush() -> FunctionResult {
 /// ```
 ///
 pub fn mosaic_definition(params: &MosaicDefinition) -> FunctionResult {
-	call_external_func(params, external::mosaic_definition)
+	simple_call_external_func(params, external::mosaic_definition)
 }
 
 /// Send to transaction pool **AddressAlias transaction**
@@ -120,7 +120,7 @@ pub fn mosaic_definition(params: &MosaicDefinition) -> FunctionResult {
 /// ```
 ///
 pub fn address_alias(params: &AddressAlias) -> FunctionResult {
-	call_external_func(params, external::address_alias)
+	simple_call_external_func(params, external::address_alias)
 }
 
 /// Send to transaction pool **MosaicAlias transaction**
@@ -146,7 +146,7 @@ pub fn address_alias(params: &AddressAlias) -> FunctionResult {
 /// ```
 ///
 pub fn mosaic_alias(params: &MosaicAlias) -> FunctionResult {
-	call_external_func(params, external::mosaic_alias)
+	simple_call_external_func(params, external::mosaic_alias)
 }
 
 /// Send to transaction pool **AddExchangeOffer transaction**
@@ -170,7 +170,7 @@ pub fn mosaic_alias(params: &MosaicAlias) -> FunctionResult {
 /// ```
 ///
 pub fn add_exchange_offer(params: &AddExchangeOffer) -> FunctionResult {
-	call_external_func(params, external::add_exchange_offer)
+	simple_call_external_func(params, external::add_exchange_offer)
 }
 
 /// Send to transaction pool **AddExchangeOffer transaction**
@@ -194,7 +194,7 @@ pub fn add_exchange_offer(params: &AddExchangeOffer) -> FunctionResult {
 /// ```
 ///
 pub fn exchange_offer(params: &ExchangeOffer) -> FunctionResult {
-	call_external_func(params, external::exchange_offer)
+	simple_call_external_func(params, external::exchange_offer)
 }
 
 /// Send to transaction pool **Transfer transaction**
@@ -223,7 +223,7 @@ pub fn exchange_offer(params: &ExchangeOffer) -> FunctionResult {
 /// ```
 ///
 pub fn transfer(params: &Transfer) -> FunctionResult {
-	call_external_func(params, external::transfer)
+	simple_call_external_func(params, external::transfer)
 }
 
 /// Send to transaction pool **RemoveExchangeOffer transaction**
@@ -247,7 +247,7 @@ pub fn transfer(params: &Transfer) -> FunctionResult {
 /// ```
 ///
 pub fn remove_exchange_offer(params: &RemoveExchangeOffer) -> FunctionResult {
-	call_external_func(params, external::remove_exchange_offer)
+	simple_call_external_func(params, external::remove_exchange_offer)
 }
 
 /// Send to transaction pool **MosaicSupplyChange transaction**
@@ -273,7 +273,7 @@ pub fn remove_exchange_offer(params: &RemoveExchangeOffer) -> FunctionResult {
 /// ```
 ///
 pub fn mosaic_supply_change(params: &MosaicSupplyChange) -> FunctionResult {
-	call_external_func(params, external::mosaic_supply_change)
+	simple_call_external_func(params, external::mosaic_supply_change)
 }
 
 /// Send to transaction pool **RegisterRootNamespace transaction**
@@ -298,7 +298,7 @@ pub fn mosaic_supply_change(params: &MosaicSupplyChange) -> FunctionResult {
 /// ```
 ///
 pub fn register_root_namespace(params: &RegisterRootNamespace) -> FunctionResult {
-	call_external_func(params, external::register_root_namespace)
+	simple_call_external_func(params, external::register_root_namespace)
 }
 
 /// Send to transaction pool **RegisterRootNamespace transaction**
@@ -323,7 +323,7 @@ pub fn register_root_namespace(params: &RegisterRootNamespace) -> FunctionResult
 /// ```
 ///
 pub fn register_sub_namespace(params: &RegisterSubNamespace) -> FunctionResult {
-	call_external_func(params, external::register_sub_namespace)
+	simple_call_external_func(params, external::register_sub_namespace)
 }
 
 /// Send to transaction pool **SecretLock transaction**
@@ -350,7 +350,7 @@ pub fn register_sub_namespace(params: &RegisterSubNamespace) -> FunctionResult {
 /// ```
 ///
 pub fn secret_lock(params: &SecretLock) -> FunctionResult {
-	call_external_func(params, external::secret_lock)
+	simple_call_external_func(params, external::secret_lock)
 }
 
 /// Send to transaction pool **SecretProof transaction**
@@ -376,7 +376,7 @@ pub fn secret_lock(params: &SecretLock) -> FunctionResult {
 /// ```
 ///
 pub fn secret_proof(params: &SecretProof) -> FunctionResult {
-	call_external_func(params, external::secret_proof)
+	simple_call_external_func(params, external::secret_proof)
 }
 
 /// Send to transaction pool **TransferWithNamespace transaction**
@@ -401,7 +401,7 @@ pub fn secret_proof(params: &SecretProof) -> FunctionResult {
 /// ```
 ///
 pub fn transfer_with_namespace(params: &TransferWithNamespace) -> FunctionResult {
-	call_external_func(params, external::transfer_with_namespace)
+	simple_call_external_func(params, external::transfer_with_namespace)
 }
 
 /// Send to transaction pool **ModifyMetadataAddress transaction**
@@ -425,7 +425,7 @@ pub fn transfer_with_namespace(params: &TransferWithNamespace) -> FunctionResult
 /// ```
 ///
 pub fn modify_metadata_address(params: &ModifyMetadataAddress) -> FunctionResult {
-	call_external_func(params, external::modify_metadata_address)
+	simple_call_external_func(params, external::modify_metadata_address)
 }
 
 /// Send to transaction pool **ModifyMetadataMosaic transaction**
@@ -449,7 +449,7 @@ pub fn modify_metadata_address(params: &ModifyMetadataAddress) -> FunctionResult
 /// ```
 ///
 pub fn modify_metadata_mosaic(params: &ModifyMetadataMosaic) -> FunctionResult {
-	call_external_func(params, external::modify_metadata_mosaic)
+	simple_call_external_func(params, external::modify_metadata_mosaic)
 }
 
 /// Send to transaction pool **ModifyMetadataNamespace transaction**
@@ -473,7 +473,7 @@ pub fn modify_metadata_mosaic(params: &ModifyMetadataMosaic) -> FunctionResult {
 /// ```
 ///
 pub fn modify_metadata_namespace(params: &ModifyMetadataNamespace) -> FunctionResult {
-	call_external_func(params, external::modify_metadata_namespace)
+	simple_call_external_func(params, external::modify_metadata_namespace)
 }
 
 /// Get data via **GetAccountExchangeInfo**
