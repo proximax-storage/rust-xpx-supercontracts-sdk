@@ -147,7 +147,7 @@ pub struct RegisterRootNamespace {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct RegisterSubNamespace {
 	pub namespace_name: String,
-	pub parent_id: NamespaceId,
+	pub parent_id: Option<NamespaceId>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -210,7 +210,7 @@ pub struct MetadataModification {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ModifyMetadataNamespace {
-	pub namespace_id: NamespaceId,
+	pub namespace_id: Option<NamespaceId>,
 	pub modifications: Option<Vec<MetadataModification>>,
 }
 
@@ -232,7 +232,7 @@ pub struct UserExchangeInfo {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct GetAccountExchangeInfo {
-	pub account: Option<PublicAccount>,
+	pub pub_key: Option<PubKey>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

@@ -462,7 +462,7 @@ pub fn modify_metadata_mosaic(params: &ModifyMetadataMosaic) -> FunctionResult {
 /// use xpx_supercontracts_sdk::transactions_type::ModifyMetadataNamespace;
 ///
 /// let params = ModifyMetadataNamespace{
-/// 	namespace_id: 10,
+/// 	namespace_id: Some(10),
 ///		modifications: None,
 /// };
 /// // Add transaction to Transactions Pool
@@ -486,7 +486,7 @@ pub fn modify_metadata_namespace(params: &ModifyMetadataNamespace) -> FunctionRe
 /// use xpx_supercontracts_sdk::transactions_type::{GetAccountExchangeInfo, UserExchangeInfo};
 ///
 /// let params = GetAccountExchangeInfo{
-/// 	account: None,
+/// 	pub_key: None,
 /// };
 /// // Get info data
 /// let result = get_account_exchange_info(&params);

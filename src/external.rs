@@ -1,5 +1,6 @@
 extern "C" {
 	pub fn __ping(number: usize) -> i64;
+	pub fn init() -> i64;
 	pub fn __write_log(msg: *const u8, len: usize) -> i64;
 	pub fn save_to_storage(
 		file_ptr: *const u8,
