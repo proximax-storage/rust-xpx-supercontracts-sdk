@@ -2,6 +2,7 @@
 
 use crate::external;
 use crate::statuses::FunctionResult;
+use crate::transactions_type::FUNCTION_RETURN_SUCCESS;
 
 /// Constructor is function for one time call that can
 /// can invoke only once for all lifetime of SuperContract.
@@ -16,20 +17,22 @@ use crate::statuses::FunctionResult;
 /// # Examples
 /// ```rust,no_run
 /// use xpx_supercontracts_sdk::utils::{constructor, ping};
-/// constructor(|| {
+/// let res = constructor(|| -> i64 {
 ///     let respond = ping(10);
-///     assert_eq!(respond.unwrap(), 11); 
+/// 	let res = respond.unwrap();
+///     assert_eq!(res, 11); 
+/// 	res
 /// });
 /// ```
 /// 
-pub fn constructor(init_handler: fn() -> ()) {
+pub fn constructor(constructor_handler: fn() -> i64) -> i64 {
 	unsafe {
 		let status = external::__constructor();
-		if status != 0 {
-			return;
+		if status != FUNCTION_RETURN_SUCCESS {
+			return status;
 		}
 	};
-	init_handler();
+	constructor_handler()
 }
 
 /// Init is function constructor that can can invoked only one time.

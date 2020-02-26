@@ -60,7 +60,7 @@ extern "C" {
 	pub fn mosaic_supply_change(
 		data_ptr: *const u8,
 		data_len: usize,
-	) -> i64;	
+	) -> i64;
 	pub fn register_root_namespace(
 		data_ptr: *const u8,
 		data_len: usize,
@@ -138,6 +138,9 @@ extern "C" {
 	pub fn get_transaction_effective_fee(
 		data_ptr: *const u8,
 		data_len: usize,
+		data: *mut u8,
+	) -> i64;
+	pub fn get_supercontract(
 		data: *mut u8,
 	) -> i64;
 }

@@ -1,12 +1,38 @@
 use xpx_supercontracts_sdk::{
 	transactions::mosaic_definition,
-	utils::init,
+	transactions_type::{MosaicDefinition, MosaicProperties, MosaicProperty},
+	utils::{constructor, debug_message},
 };
+use xpx_supercontracts_sdk::transactions_type::{FUNCTION_CONSTRUCTOR_FAIL_TO_SAVE, FUNCTION_RETURN_SUCCESS, FUNCTION_ERROR};
 
-pub fn create_mosaic() {}
+pub fn create_mosaic() -> i64 {
+	let res = mosaic_definition(&MosaicDefinition {
+		nonce: 0,
+		owner_public_key: vec![],
+		mosaic_props: Some(MosaicProperties {
+			supply_mutable: true,
+			transferable: true,
+			divisibility: 0,
+			optional_properties: vec![MosaicProperty {
+				id: 0,
+				value: 0,
+			}],
+		}),
+	});
+	if res.is_err() {
+		return FUNCTION_ERROR;
+	}
+	if res.unwrap() < FUNCTION_RETURN_SUCCESS {
+		debug_message(&"failed create mosaic".to_string());
+	}
+	FUNCTION_RETURN_SUCCESS
+}
 
 #[no_mangle]
 pub extern "C" fn app_main() -> i64 {
-	init(create_mosaic);
-	0
+	let res = constructor(create_mosaic);
+	if res != FUNCTION_RETURN_SUCCESS && res == FUNCTION_CONSTRUCTOR_FAIL_TO_SAVE {
+		return res;
+	}
+	FUNCTION_RETURN_SUCCESS
 }

@@ -24,6 +24,7 @@ use serde::de::DeserializeOwned;
 
 use crate::external;
 use crate::statuses::{FunctionResult, Result};
+use crate::statuses::Error;
 use crate::tools::call::{call_external_func, simple_call_external_func};
 use crate::transactions_type::*;
 
@@ -688,4 +689,32 @@ pub fn get_transaction_statuses(params: &GetTransactionStatuses) -> Result<Optio
 ///
 pub fn get_transaction_effective_fee(params: &GetTransactionEffectiveFee) -> Result<i64> {
 	call_external_func(params, external::get_transaction_effective_fee)
+}
+
+/// Get data current SuperContract data
+/// 
+/// ## Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::transactions::{
+///		get_supercontract,
+/// };
+///
+/// // Get SC data
+/// let result = get_supercontract();
+/// let sc = result.unwrap();
+/// ```
+///
+pub fn get_supercontract() -> Result<SuperContract> {
+	let fn_result = unsafe {
+		let fn_result: &mut Vec<u8> = &mut vec![];
+		let fn_result_len = external::get_supercontract(fn_result.as_mut_ptr());
+		let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
+		fn_data_bytes.to_vec()
+	};
+
+	let result = serde_json::from_slice(&fn_result[..]);
+	if result.is_err() {
+		return Err(Error::DeserializeJson);
+	}
+	Ok(result.unwrap())
 }

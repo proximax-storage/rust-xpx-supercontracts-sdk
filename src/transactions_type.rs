@@ -7,6 +7,10 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
+pub const FUNCTION_RETURN_SUCCESS: i64 = 0;
+pub const FUNCTION_CONSTRUCTOR_FAIL_TO_SAVE: i64 = -39;
+pub const FUNCTION_ERROR: i64 = -1000;
+
 pub type NetworkType = u8;
 pub type EntityType = u16;
 pub type EntityVersion = u32;
@@ -30,6 +34,23 @@ pub type OfferType = u8;
 pub type TransactionID = [u8; 32];
 pub type TransactionType = u8;
 pub type Signature = [u8; 64];
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Drive {
+	id: Hash,
+	owner: PubKey,
+	root: Hash,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SuperContract {
+	id: Hash,
+	drive: Drive,
+	file: Hash,
+	vm_version: u64,
+	functions: Vec<String>,
+}
+
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AbstractTransaction {
