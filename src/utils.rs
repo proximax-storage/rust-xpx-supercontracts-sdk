@@ -3,6 +3,35 @@
 use crate::external;
 use crate::statuses::FunctionResult;
 
+/// Constructor is function for one time call that can
+/// can invoke only once for all lifetime of SuperContract.
+/// 
+/// Most useful case is run some specific functionality and
+/// functions once for SuperContract life. Example: create Mosaic
+///
+/// Difference from `init` fucntion that, function can call
+/// every time when execute some SuperContract function. And
+/// for that concrete function it can call only once.
+/// 
+/// # Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::utils::{constructor, ping};
+/// constructor(|| {
+///     let respond = ping(10);
+///     assert_eq!(respond.unwrap(), 11); 
+/// });
+/// ```
+/// 
+pub fn constructor(init_handler: fn() -> ()) {
+	unsafe {
+		let status = external::__constructor();
+		if status != 0 {
+			return;
+		}
+	};
+	init_handler();
+}
+
 /// Init is function constructor that can can invoked only one time.
 /// 
 /// Most useful case is run some specifuc functionality and
@@ -21,7 +50,7 @@ use crate::statuses::FunctionResult;
 /// 
 pub fn init(init_handler: fn() -> ()) {
 	unsafe {
-		let status = external::init();
+		let status = external::__init();
 		if status != 0 {
 			return;
 		}

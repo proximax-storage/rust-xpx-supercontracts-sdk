@@ -3,7 +3,7 @@
 That directory provide basic examples for **How-To** work with SDK.
 
 ### Examples list
-* `ping`git c
+* `ping`
 * `http`
 * `debug`
 
