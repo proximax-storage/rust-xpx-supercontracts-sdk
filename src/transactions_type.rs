@@ -44,11 +44,11 @@ pub struct Drive {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SuperContract {
-	id: Hash,
-	drive: Drive,
-	file: Hash,
-	vm_version: u64,
-	functions: Vec<String>,
+	pub id: Hash,
+	pub drive: Drive,
+	pub file: Hash,
+	pub vm_version: u64,
+	pub functions: Vec<String>,
 }
 
 

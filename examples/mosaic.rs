@@ -3,12 +3,19 @@ use xpx_supercontracts_sdk::{
 	transactions_type::{MosaicDefinition, MosaicProperties, MosaicProperty},
 	utils::{constructor, debug_message},
 };
-use xpx_supercontracts_sdk::transactions_type::{FUNCTION_CONSTRUCTOR_FAIL_TO_SAVE, FUNCTION_RETURN_SUCCESS, FUNCTION_ERROR};
+use xpx_supercontracts_sdk::transactions::get_supercontract;
+use xpx_supercontracts_sdk::transactions_type::{FUNCTION_CONSTRUCTOR_FAIL_TO_SAVE, FUNCTION_ERROR, FUNCTION_RETURN_SUCCESS, SuperContract};
 
 pub fn create_mosaic() -> i64 {
+	let res = get_supercontract();
+	if res.is_err() {
+		return -1;
+	}
+	let sc: SuperContract = res.unwrap();
+
 	let res = mosaic_definition(&MosaicDefinition {
 		nonce: 0,
-		owner_public_key: vec![],
+		owner_public_key: sc.id.to_vec(),
 		mosaic_props: Some(MosaicProperties {
 			supply_mutable: true,
 			transferable: true,
