@@ -13,9 +13,10 @@ pub fn create_mosaic() -> i64 {
 	}
 	let sc: SuperContract = res.unwrap();
 
+	debug_message(&format!("SC.ID: {:?}", sc.drive.owner));
 	let res = mosaic_definition(&MosaicDefinition {
 		nonce: 0,
-		owner_public_key: sc.id.to_vec(),
+		owner_public_key: sc.drive.owner,
 		mosaic_props: Some(MosaicProperties {
 			supply_mutable: true,
 			transferable: true,

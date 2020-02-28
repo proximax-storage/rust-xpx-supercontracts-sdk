@@ -37,18 +37,17 @@ pub type Signature = [u8; 64];
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Drive {
-	id: Hash,
-	owner: PubKey,
-	root: Hash,
+	pub drive: String,
+	pub owner: String,
+	pub root: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SuperContract {
-	pub id: Hash,
+	pub id: String,
 	pub drive: Drive,
-	pub file: Hash,
-	pub vm_version: u64,
-	pub functions: Vec<String>,
+	pub file: String,
+	pub vmversion: u64,
 }
 
 
@@ -74,7 +73,7 @@ pub struct AbstractTransaction {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct MosaicDefinition {
 	pub nonce: u32,
-	pub owner_public_key: Vec<u8>,
+	pub owner_public_key: String,
 	pub mosaic_props: Option<MosaicProperties>,
 }
 
