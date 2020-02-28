@@ -75,6 +75,20 @@ pub fn ping(msg: usize) -> FunctionResult {
 	return unsafe { Ok(external::__ping(msg)) };
 }
 
+/// Return incremented result from all previous invoke that functions.
+/// 
+/// Useful for calculating some incremented state.
+///
+/// # Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::utils::inc;
+/// let respond = inc();
+/// assert_eq!(respond.unwrap(), 11);
+/// ```
+pub fn inc() -> FunctionResult {
+	return unsafe { Ok(external::__inc()) };
+}
+
 /// Send debug message to `WasmVM`. It's convenient
 /// basic function for development debugging.
 /// Message that was sent will display in `WasmVM`

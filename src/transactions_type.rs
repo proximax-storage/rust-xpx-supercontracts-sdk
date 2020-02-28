@@ -11,42 +11,43 @@ pub const FUNCTION_RETURN_SUCCESS: i64 = 0;
 pub const FUNCTION_CONSTRUCTOR_FAIL_TO_SAVE: i64 = -39;
 pub const FUNCTION_ERROR: i64 = -1000;
 
+pub type Cid = String;
 pub type NetworkType = u8;
 pub type EntityType = u16;
 pub type EntityVersion = u32;
 pub type Amount = i64;
 pub type Deadline = i64;
-pub type PublicAccount = [u8; 32];
+pub type PublicAccount = String;
 pub type Height = i64;
-pub type Hash = [u8; 32];
-pub type Address = [u8; 25];
+pub type Hash = String;
+pub type Address = String;
 pub type NamespaceId = i64;
 pub type AliasActionType = u8;
 pub type MosaicId = i64;
-pub type PubKey = [u8; 32];
+pub type PubKey = String;
 pub type AssetId = u64;
 pub type Duration = i64;
 pub type MosaicSupplyType = u8;
 pub type MetadataModificationType = u8;
 pub type HashType = u8;
-pub type Message = Vec<u8>;
+pub type Message = String;
 pub type OfferType = u8;
-pub type TransactionID = [u8; 32];
+pub type TransactionID = String;
 pub type TransactionType = u8;
-pub type Signature = [u8; 64];
+pub type Signature = String;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Drive {
-	pub drive: String,
-	pub owner: String,
-	pub root: String,
+	pub drive: Cid,
+	pub owner: PubKey,
+	pub root: Cid,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SuperContract {
-	pub id: String,
+	pub id: Cid,
 	pub drive: Drive,
-	pub file: String,
+	pub file: Cid,
 	pub vmversion: u64,
 }
 
@@ -333,7 +334,7 @@ pub trait SignedTransaction {
 	fn id(&self) -> TransactionID;
 	fn transaction_type(&self) -> TransactionType;
 	fn signer(&self) -> PubKey;
-	fn signature(&self) -> Vec<u8>;
+	fn signature(&self) -> Signature;
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -348,7 +349,7 @@ pub struct DriveFsTransaction {
 	pub id: TransactionID,
 	pub transaction_type: TransactionType,
 	pub signer: PubKey,
-	pub signature: Vec<u8>,
+	pub signature: Signature,
 	pub drive_id: Hash,
 	pub add_actions: Option<Vec<Action>>,
 	pub remove_actions: Option<Vec<Action>>,
@@ -356,7 +357,7 @@ pub struct DriveFsTransaction {
 
 impl DriveFsTransaction {
 	pub fn drive_id(&self) -> Hash {
-		self.drive_id
+		self.drive_id.clone()
 	}
 
 	pub fn add_actions(&self) -> Option<Vec<Action>> {
@@ -370,7 +371,7 @@ impl DriveFsTransaction {
 
 impl SignedTransaction for DriveFsTransaction {
 	fn id(&self) -> TransactionID {
-		self.id
+		self.id.clone()
 	}
 
 	fn transaction_type(&self) -> TransactionType {
@@ -378,10 +379,10 @@ impl SignedTransaction for DriveFsTransaction {
 	}
 
 	fn signer(&self) -> PubKey {
-		self.signer
+		self.signer.clone()
 	}
 
-	fn signature(&self) -> Vec<u8> {
+	fn signature(&self) -> Signature {
 		self.signature.clone()
 	}
 }

@@ -49,7 +49,7 @@ use crate::transactions_type::*;
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::MosaicDefinition;
 /// 
-/// let pub_key = "2C8178EF9ED7A6D30ABDC1E4D30D68B05861112A98B1629FBE2C8D16FDE97A1C".as_bytes().to_vec();
+/// let pub_key = "2C8178EF9ED7A6D30ABDC1E4D30D68B05861112A98B1629FBE2C8D16FDE97A1C".to_string();
 /// let params = MosaicDefinition{
 ///		nonce: 100,
 ///		owner_public_key: pub_key,
@@ -81,7 +81,7 @@ pub fn flush() -> FunctionResult {
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::MosaicDefinition;
 /// 
-/// let pub_key = "2C8178EF9ED7A6D30ABDC1E4D30D68B05861112A98B1629FBE2C8D16FDE97A1C".as_bytes().to_vec();
+/// let pub_key = "2C8178EF9ED7A6D30ABDC1E4D30D68B05861112A98B1629FBE2C8D16FDE97A1C".to_string();
 /// let params = MosaicDefinition{
 ///		nonce: 100,
 ///		owner_public_key: pub_key,
