@@ -115,10 +115,10 @@ pub struct AddExchangeOffer {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ExchangeConfirmation {
-	offer_type: OfferType,
-	mosaic: Option<Mosaic>,
-	cost: Amount,
-	owner: Option<PublicAccount>,
+	pub offer_type: OfferType,
+	pub mosaic: Option<Mosaic>,
+	pub cost: Amount,
+	pub owner: Option<PublicAccount>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -143,8 +143,8 @@ pub struct Transfer {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct RemoveOffer {
-	offer_type: OfferType,
-	asset_id: AssetId,
+	pub offer_type: OfferType,
+	pub asset_id: AssetId,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

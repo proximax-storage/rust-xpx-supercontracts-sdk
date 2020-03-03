@@ -3,8 +3,7 @@ use serde::Serialize;
 use xpx_supercontracts_sdk::statuses::Result;
 use xpx_supercontracts_sdk::storage::save_result;
 use xpx_supercontracts_sdk::transactions as tx;
-use xpx_supercontracts_sdk::transactions::get_transaction;
-use xpx_supercontracts_sdk::transactions_type::{DriveFsTransaction, GetAccountExchangeInfo, GetExchangeOfferByAssetId, GetMosaicInfo, GetMosaicInfos, GetMosaicsNames, GetTransaction, GetTransactionEffectiveFee, GetTransactionStatus, GetTransactionStatuses, ModifyMetadataAddress, ModifyMetadataMosaic, ModifyMetadataNamespace, Mosaic, RegisterSubNamespace, Secret, SecretLock, SecretProof, TransferWithNamespace, RegisterRootNamespace};
+use xpx_supercontracts_sdk::transactions_type::{AddExchangeOffer, AddOffer, AddressAlias, DriveFsTransaction, ExchangeConfirmation, ExchangeOffer, GetAccountExchangeInfo, GetExchangeOfferByAssetId, GetMosaicInfo, GetMosaicInfos, GetMosaicsNames, GetTransaction, GetTransactionEffectiveFee, GetTransactionStatus, GetTransactionStatuses, ModifyMetadataAddress, ModifyMetadataMosaic, ModifyMetadataNamespace, Mosaic, MosaicAlias, MosaicSupplyChange, RegisterRootNamespace, RegisterSubNamespace, RemoveExchangeOffer, RemoveOffer, Secret, SecretLock, SecretProof, Transfer, TransferWithNamespace};
 use xpx_supercontracts_sdk::utils::{constructor, debug_message, init, ping};
 
 #[no_mangle]
@@ -51,7 +50,7 @@ pub extern "C" fn save_sample_result() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_sc() -> i64 {
+pub extern "C" fn exmpl_get_supercontract() -> i64 {
 	let res = tx::get_supercontract();
 	if let Err(err) = res {
 		debug_message(&format!("{:?}", err));
@@ -62,7 +61,7 @@ pub extern "C" fn get_sc() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_transaction_effective_fee() -> i64 {
+pub extern "C" fn exmpl_get_transaction_effective_fee() -> i64 {
 	let res = tx::get_transaction_effective_fee(&GetTransactionEffectiveFee {
 		id: String::from("some_id"),
 	});
@@ -75,8 +74,8 @@ pub extern "C" fn get_transaction_effective_fee() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_tx() -> i64 {
-	let tx_result: Result<DriveFsTransaction> = get_transaction(&GetTransaction {
+pub extern "C" fn exmpl_get_transaction() -> i64 {
+	let tx_result: Result<DriveFsTransaction> = tx::get_transaction(&GetTransaction {
 		id: String::from("some_id"),
 	});
 	if let Err(err) = tx_result {
@@ -88,7 +87,7 @@ pub extern "C" fn get_tx() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_transaction_status() -> i64 {
+pub extern "C" fn exmpl_get_transaction_status() -> i64 {
 	let res = tx::get_transaction_status(&GetTransactionStatus {
 		id: String::from("some_id"),
 	});
@@ -101,7 +100,7 @@ pub extern "C" fn get_transaction_status() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_transaction_statuses() -> i64 {
+pub extern "C" fn exmpl_get_transaction_statuses() -> i64 {
 	let res = tx::get_transaction_statuses(&GetTransactionStatuses {
 		ids: vec![String::from("some_id")],
 	});
@@ -114,9 +113,8 @@ pub extern "C" fn get_transaction_statuses() -> i64 {
 }
 
 
-//---
 #[no_mangle]
-pub extern "C" fn get_account_exchange_info() -> i64 {
+pub extern "C" fn exmpl_get_account_exchange_info() -> i64 {
 	let res = tx::get_account_exchange_info(&GetAccountExchangeInfo {
 		pub_key: Some(String::from("some_pub_key")),
 	});
@@ -129,7 +127,7 @@ pub extern "C" fn get_account_exchange_info() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_exchange_offer_by_asset_id() -> i64 {
+pub extern "C" fn exmpl_get_exchange_offer_by_asset_id() -> i64 {
 	let res = tx::get_exchange_offer_by_asset_id(&GetExchangeOfferByAssetId {
 		asset_id: 1,
 		offer_type: 2,
@@ -143,7 +141,7 @@ pub extern "C" fn get_exchange_offer_by_asset_id() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_mosaic_info() -> i64 {
+pub extern "C" fn exmpl_get_mosaic_info() -> i64 {
 	let res = tx::get_mosaic_info(&GetMosaicInfo {
 		mosaic_id: Some(1),
 	});
@@ -156,7 +154,7 @@ pub extern "C" fn get_mosaic_info() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_mosaic_infos() -> i64 {
+pub extern "C" fn exmpl_get_mosaic_infos() -> i64 {
 	let res = tx::get_mosaic_infos(&GetMosaicInfos {
 		msc_ids: Some(vec![2]),
 	});
@@ -169,7 +167,7 @@ pub extern "C" fn get_mosaic_infos() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn get_mosaics_names() -> i64 {
+pub extern "C" fn exmpl_get_mosaics_names() -> i64 {
 	let res = tx::get_mosaics_names(&GetMosaicsNames {
 		msc_ids: Some(vec![1]),
 	});
@@ -182,7 +180,7 @@ pub extern "C" fn get_mosaics_names() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn modify_metadata_namespace() -> i64 {
+pub extern "C" fn exmpl_modify_metadata_namespace() -> i64 {
 	let res = tx::modify_metadata_namespace(&ModifyMetadataNamespace {
 		namespace_id: Some(1),
 		modifications: None,
@@ -196,7 +194,7 @@ pub extern "C" fn modify_metadata_namespace() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn modify_metadata_mosaic() -> i64 {
+pub extern "C" fn exmpl_modify_metadata_mosaic() -> i64 {
 	let res = tx::modify_metadata_mosaic(&ModifyMetadataMosaic {
 		mosaic_id: Some(1),
 		modifications: None,
@@ -210,7 +208,7 @@ pub extern "C" fn modify_metadata_mosaic() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn modify_metadata_address() -> i64 {
+pub extern "C" fn exmpl_modify_metadata_address() -> i64 {
 	let res = tx::modify_metadata_address(&ModifyMetadataAddress {
 		address: Some(String::from("some_address")),
 		modifications: None,
@@ -224,7 +222,7 @@ pub extern "C" fn modify_metadata_address() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn secret_proof() -> i64 {
+pub extern "C" fn exmpl_secret_proof() -> i64 {
 	let res = tx::secret_proof(&SecretProof {
 		hash_type: 1,
 		proof: None,
@@ -239,7 +237,7 @@ pub extern "C" fn secret_proof() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn transfer_with_namespace() -> i64 {
+pub extern "C" fn exmpl_transfer_with_namespace() -> i64 {
 	let res = tx::transfer_with_namespace(&TransferWithNamespace {
 		recipient: Some(1),
 		mosaics: Some(vec![]),
@@ -255,7 +253,7 @@ pub extern "C" fn transfer_with_namespace() -> i64 {
 
 
 #[no_mangle]
-pub extern "C" fn secret_lock() -> i64 {
+pub extern "C" fn exmpl_secret_lock() -> i64 {
 	let res = tx::secret_lock(&SecretLock {
 		mosaic: Some(Mosaic {
 			asset_id: 1,
@@ -277,7 +275,7 @@ pub extern "C" fn secret_lock() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn register_sub_namespace() -> i64 {
+pub extern "C" fn exmpl_register_sub_namespace() -> i64 {
 	let res = tx::register_sub_namespace(&RegisterSubNamespace {
 		namespace_name: String::from("name"),
 		parent_id: None,
@@ -291,10 +289,129 @@ pub extern "C" fn register_sub_namespace() -> i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn register_root_namespace() -> i64 {
+pub extern "C" fn exmpl_register_root_namespace() -> i64 {
 	let res = tx::register_root_namespace(&RegisterRootNamespace {
 		namespace_name: String::from("name"),
 		duration: 1000,
+	});
+	if let Err(err) = res {
+		debug_message(&format!("{:?}", err));
+		return -1;
+	}
+	debug_message(&format!("Result: {:?}", res.unwrap()));
+	0
+}
+
+#[no_mangle]
+pub extern "C" fn exmpl_mosaic_supply_change() -> i64 {
+	let res = tx::mosaic_supply_change(&MosaicSupplyChange {
+		asset_id: 10,
+		supply_type: 100,
+		delta: 300,
+	});
+	if let Err(err) = res {
+		debug_message(&format!("{:?}", err));
+		return -1;
+	}
+	debug_message(&format!("Result: {:?}", res.unwrap()));
+	0
+}
+
+#[no_mangle]
+pub extern "C" fn exmpl_remove_exchange_offer() -> i64 {
+	let res = tx::remove_exchange_offer(&RemoveExchangeOffer {
+		remove_offers: Some(vec![RemoveOffer {
+			asset_id: 10,
+			offer_type: 1,
+		}])
+	});
+	if let Err(err) = res {
+		debug_message(&format!("{:?}", err));
+		return -1;
+	}
+	debug_message(&format!("Result: {:?}", res.unwrap()));
+	0
+}
+
+#[no_mangle]
+pub extern "C" fn exmpl_transfer() -> i64 {
+	let res = tx::transfer(&Transfer {
+		pub_key: String::from("some_pub_key"),
+		asset_id: 10,
+		amount: 1000,
+	});
+	if let Err(err) = res {
+		debug_message(&format!("{:?}", err));
+		return -1;
+	}
+	debug_message(&format!("Result: {:?}", res.unwrap()));
+	0
+}
+
+#[no_mangle]
+pub extern "C" fn exmpl_exchange_offer() -> i64 {
+	let res = tx::exchange_offer(&ExchangeOffer {
+		offer: Some(vec![ExchangeConfirmation {
+			offer_type: 1,
+			mosaic: Some(Mosaic {
+				asset_id: 3,
+				amount: 10000,
+			}),
+			cost: 1000,
+			owner: Some(String::from("public account")),
+		}])
+	});
+	if let Err(err) = res {
+		debug_message(&format!("{:?}", err));
+		return -1;
+	}
+	debug_message(&format!("Result: {:?}", res.unwrap()));
+	0
+}
+
+#[no_mangle]
+pub extern "C" fn exmpl_add_exchange_offer() -> i64 {
+	let res = tx::add_exchange_offer(&AddExchangeOffer {
+		add_offers: Some(vec![AddOffer {
+			offer_type: 3,
+			mosaic: Some(Mosaic {
+				amount: 1000,
+				asset_id: 3,
+
+			}),
+			cost: 100,
+			duration: 1000,
+		}]),
+	});
+	if let Err(err) = res {
+		debug_message(&format!("{:?}", err));
+		return -1;
+	}
+	debug_message(&format!("Result: {:?}", res.unwrap()));
+	0
+}
+
+#[no_mangle]
+pub extern "C" fn exmpl_mosaic_alias() -> i64 {
+	let res = tx::mosaic_alias(&MosaicAlias {
+		mosaic_id: Some(10),
+		namespace_id: Some(3),
+		action_type: 2,
+	});
+	if let Err(err) = res {
+		debug_message(&format!("{:?}", err));
+		return -1;
+	}
+	debug_message(&format!("Result: {:?}", res.unwrap()));
+	0
+}
+
+#[no_mangle]
+pub extern "C" fn exmpl_address_alias() -> i64 {
+	let res = tx::address_alias(&AddressAlias {
+		address: Some(String::from("some addr")),
+		namespace_id: Some(3),
+		action_type: 2,
 	});
 	if let Err(err) = res {
 		debug_message(&format!("{:?}", err));
