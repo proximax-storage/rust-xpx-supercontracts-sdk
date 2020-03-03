@@ -208,11 +208,9 @@ pub fn exchange_offer(params: &ExchangeOffer) -> FunctionResult {
 /// };
 /// use xpx_supercontracts_sdk::transactions_type::{Transfer, PubKey};
 /// 
-/// let pub_key = "2C8178EF9ED7A6D30ABDC1E4D30D68B05861112A98B1629FBE2C8D16FDE97A1C".as_bytes();
-/// let mut pk: PubKey = [0; 32];
-/// pk.copy_from_slice(&pub_key[..32]);
+/// let pub_key = "2C8178EF9ED7A6D30ABDC1E4D30D68B05861112A98B1629FBE2C8D16FDE97A1C".to_string();
 /// let params = Transfer{
-/// 	pub_key: pk, 
+/// 	pub_key: pub_key, 
 ///		asset_id: 10,
 ///		amount: 1000, 	
 /// };
@@ -392,7 +390,7 @@ pub fn secret_proof(params: &SecretProof) -> FunctionResult {
 /// let params = TransferWithNamespace{
 /// 	recipient: None,
 ///		mosaics: None,
-///		message: "some message".as_bytes().to_vec(),
+///		message: "some message".to_string(),
 /// };
 /// // Add transaction to Transactions Pool
 /// let tx_result = transfer_with_namespace(&params);
@@ -613,7 +611,7 @@ pub fn get_mosaics_names(params: &GetMosaicsNames) -> Result<Option<Vec<MosaicNa
 /// use xpx_supercontracts_sdk::transactions_type::{GetTransaction, DriveFsTransaction};
 ///
 /// let params = GetTransaction{
-/// 	id: [0; 32],
+/// 	id: String::from("some_id"),
 /// };
 /// // Get info data
 /// let tx_result: Result<DriveFsTransaction> = get_transaction(&params);
@@ -638,7 +636,7 @@ pub fn get_transaction<T: SignedTransaction + DeserializeOwned>(params: &GetTran
 /// use xpx_supercontracts_sdk::transactions_type::{GetTransactionStatus, TransactionStatus};
 ///
 /// let params = GetTransactionStatus{
-/// 	id: [0; 32],
+/// 	id: String::from("some_id"),
 /// };
 /// // Get info data
 /// let result = get_transaction_status(&params);
@@ -659,7 +657,7 @@ pub fn get_transaction_status(params: &GetTransactionStatus) -> Result<Option<Tr
 /// use xpx_supercontracts_sdk::transactions_type::{GetTransactionStatuses, TransactionStatus};
 ///
 /// let params = GetTransactionStatuses{
-/// 	ids: vec!([0;32]),
+/// 	ids: vec![],
 /// };
 /// // Get info data
 /// let result = get_transaction_statuses(&params);
@@ -680,7 +678,7 @@ pub fn get_transaction_statuses(params: &GetTransactionStatuses) -> Result<Optio
 /// use xpx_supercontracts_sdk::transactions_type::{GetTransactionEffectiveFee};
 ///
 /// let params = GetTransactionEffectiveFee{
-/// 	id: [0;32],
+/// 	id: String::from("some_id"),
 /// };
 /// // Get info data
 /// let result = get_transaction_effective_fee(&params);
