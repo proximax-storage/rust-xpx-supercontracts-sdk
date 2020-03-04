@@ -4,6 +4,7 @@
 use serde::{de::DeserializeOwned, Serialize};
 
 use crate::statuses::{Error, FunctionResult, Result};
+use crate::utils::debug_message;
 
 /// External function type definition for call 
 /// closure external FFI functions 
@@ -37,7 +38,8 @@ pub fn call_external_func<T, U>(params: &T, extenral_fn: ExternalFnWithReturnDat
 	};
 
 	let result = serde_json::from_slice(&fn_result[..]);
-	if result.is_err() {
+	if let Err(err) = result {
+		debug_message(&format!("Err: {:?}", err));
 		return Err(Error::DeserializeJson);
 	}
 	Ok(result.unwrap())

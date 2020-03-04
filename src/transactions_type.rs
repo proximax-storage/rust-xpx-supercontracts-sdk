@@ -17,7 +17,6 @@ pub type EntityType = u16;
 pub type EntityVersion = u32;
 pub type Amount = i64;
 pub type Deadline = i64;
-pub type PublicAccount = String;
 pub type Height = i64;
 pub type Hash = String;
 pub type Address = String;
@@ -248,7 +247,7 @@ pub struct OfferInfo {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct UserExchangeInfo {
 	pub owner: Option<PublicAccount>,
-	pub offers: HashMap<OfferType, HashMap<MosaicId, Option<OfferInfo>>>,
+	pub offers: Option<HashMap<OfferType, HashMap<MosaicId, Option<OfferInfo>>>>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -263,13 +262,18 @@ pub struct GetExchangeOfferByAssetId {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+pub struct PublicAccount {
+	pub public_key: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct MosaicInfo {
-	mosaic_id: Option<MosaicId>,
-	supply: Amount,
-	height: Height,
-	owner: Option<PublicAccount>,
-	revision: u32,
-	properties: Option<MosaicProperties>,
+	//pub mosaic_id: Option<MosaicId>,
+	pub supply: Amount,
+	pub height: Height,
+	pub owner: Option<PublicAccount>,
+	pub revision: u32,
+	pub properties: Option<MosaicProperties>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

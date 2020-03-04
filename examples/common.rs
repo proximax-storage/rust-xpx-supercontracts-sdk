@@ -3,7 +3,7 @@ use serde::Serialize;
 use xpx_supercontracts_sdk::statuses::Result;
 use xpx_supercontracts_sdk::storage::save_result;
 use xpx_supercontracts_sdk::transactions as tx;
-use xpx_supercontracts_sdk::transactions_type::{AddExchangeOffer, AddOffer, AddressAlias, DriveFsTransaction, ExchangeConfirmation, ExchangeOffer, GetAccountExchangeInfo, GetExchangeOfferByAssetId, GetMosaicInfo, GetMosaicInfos, GetMosaicsNames, GetTransaction, GetTransactionEffectiveFee, GetTransactionStatus, GetTransactionStatuses, ModifyMetadataAddress, ModifyMetadataMosaic, ModifyMetadataNamespace, Mosaic, MosaicAlias, MosaicSupplyChange, RegisterRootNamespace, RegisterSubNamespace, RemoveExchangeOffer, RemoveOffer, Secret, SecretLock, SecretProof, Transfer, TransferWithNamespace};
+use xpx_supercontracts_sdk::transactions_type::{AddExchangeOffer, AddOffer, AddressAlias, DriveFsTransaction, ExchangeConfirmation, ExchangeOffer, GetAccountExchangeInfo, GetExchangeOfferByAssetId, GetMosaicInfo, GetMosaicInfos, GetMosaicsNames, GetTransaction, GetTransactionEffectiveFee, GetTransactionStatus, GetTransactionStatuses, ModifyMetadataAddress, ModifyMetadataMosaic, ModifyMetadataNamespace, Mosaic, MosaicAlias, MosaicSupplyChange, PublicAccount, RegisterRootNamespace, RegisterSubNamespace, RemoveExchangeOffer, RemoveOffer, Secret, SecretLock, SecretProof, Transfer, TransferWithNamespace};
 use xpx_supercontracts_sdk::utils::{constructor, debug_message, init, ping};
 
 #[no_mangle]
@@ -63,7 +63,7 @@ pub extern "C" fn exmpl_get_supercontract() -> i64 {
 #[no_mangle]
 pub extern "C" fn exmpl_get_transaction_effective_fee() -> i64 {
 	let res = tx::get_transaction_effective_fee(&GetTransactionEffectiveFee {
-		id: String::from("some_id"),
+		id: String::from("baegqajaiaqjcb6qufter6rgkiyndqd273kp4n43q2q34uhbt24qb3ehexqcu74u3"),
 	});
 	if let Err(err) = res {
 		debug_message(&format!("{:?}", err));
@@ -358,7 +358,9 @@ pub extern "C" fn exmpl_exchange_offer() -> i64 {
 				amount: 10000,
 			}),
 			cost: 1000,
-			owner: Some(String::from("public account")),
+			owner: Some(PublicAccount {
+				public_key: String::from("baegqajaiaqjcakxppt6hi3pcghh3en7fj47jkf6phllbkz2hx2bdvdeyelrrcmx5"),
+			}),
 		}])
 	});
 	if let Err(err) = res {
