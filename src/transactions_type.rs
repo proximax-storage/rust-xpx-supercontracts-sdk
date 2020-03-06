@@ -376,10 +376,10 @@ pub struct GetTransactionEffectiveFee {
 /// **SignedTransaction** is common interface for transactions data
 /// from Blockchain.
 pub trait SignedTransaction {
-    pub fn id(&self) -> TransactionID;
-    pub fn transaction_type(&self) -> TransactionType;
-    pub fn signer(&self) -> PubKey;
-    pub fn signature(&self) -> Signature;
+    fn id(&self) -> TransactionID;
+    fn transaction_type(&self) -> TransactionType;
+    fn signer(&self) -> PubKey;
+    fn signature(&self) -> Signature;
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
