@@ -347,11 +347,11 @@ pub struct GetTransactions {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct TransactionStatus {
-    deadline: Option<Deadline>,
-    group: String,
-    status: String,
-    hash: Option<Hash>,
-    height: Height,
+    pub deadline: Option<Deadline>,
+    pub group: String,
+    pub status: String,
+    pub hash: Option<Hash>,
+    pub height: Height,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -376,10 +376,10 @@ pub struct GetTransactionEffectiveFee {
 /// **SignedTransaction** is common interface for transactions data
 /// from Blockchain.
 pub trait SignedTransaction {
-    fn id(&self) -> TransactionID;
-    fn transaction_type(&self) -> TransactionType;
-    fn signer(&self) -> PubKey;
-    fn signature(&self) -> Signature;
+    pub fn id(&self) -> TransactionID;
+    pub fn transaction_type(&self) -> TransactionType;
+    pub fn signer(&self) -> PubKey;
+    pub fn signature(&self) -> Signature;
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
