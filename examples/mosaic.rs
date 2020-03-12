@@ -8,7 +8,7 @@ use xpx_supercontracts_sdk::{
     utils::{constructor, debug_message},
 };
 
-pub fn create_mosaic() -> i64 {
+fn create_mosaic() -> i64 {
     let res = get_supercontract();
     if res.is_err() {
         return -1;
