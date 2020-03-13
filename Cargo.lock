@@ -195,7 +195,7 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "xpx_supercontracts_sdk"
+name = "xpx-supercontracts-sdk"
 version = "0.2.0"
 dependencies = [
  "csv 1.1.3 (registry+https://github.com/rust-lang/crates.io-index)",

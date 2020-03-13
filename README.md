@@ -1,3 +1,4 @@
+![Documentation](https://docs.rs/xpx-supercontracts-sdk/badge.svg)
 # ProximaX Supercontracts Rust SDK
 
 Official ProximaX Supercontracts SDK Library in Rust lang.
