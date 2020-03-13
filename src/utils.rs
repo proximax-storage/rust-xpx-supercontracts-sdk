@@ -1,7 +1,65 @@
 //! Basic utils functions for communication with `WasmVM`.
 
 use crate::external;
-use crate::statuses::Result;
+use crate::statuses::FunctionResult;
+use crate::transactions_type::FUNCTION_RETURN_SUCCESS;
+
+/// Constructor is function for one time call that can
+/// can invoke only once for all lifetime of SuperContract.
+///
+/// Most useful case is run some specific functionality and
+/// functions once for SuperContract life. Example: create Mosaic
+///
+/// Difference from `init` fucntion that, function can call
+/// every time when execute some SuperContract function. And
+/// for that concrete function it can call only once.
+///
+/// # Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::utils::{constructor, ping};
+/// let res = constructor(|| -> i64 {
+///     let respond = ping(10);
+/// 	let res = respond.unwrap();
+///     assert_eq!(res, 11);
+/// 	res
+/// });
+/// ```
+///
+pub fn constructor(constructor_handler: fn() -> i64) -> i64 {
+    unsafe {
+        let status = external::__constructor();
+        if status != FUNCTION_RETURN_SUCCESS {
+            return status;
+        }
+    };
+    constructor_handler()
+}
+
+/// Init is function constructor that can can invoked only one time.
+///
+/// Most useful case is run some specifuc functionality and
+/// functions to tune-up and prepare some state for SuperContract.
+///
+/// It's impossible run that function twice.
+///
+/// # Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::utils::{init, ping};
+/// init(|| {
+///     let respond = ping(10);
+///     assert_eq!(respond.unwrap(), 11);
+/// });
+/// ```
+///
+pub fn init(init_handler: fn() -> ()) {
+    unsafe {
+        let status = external::__init();
+        if status != 0 {
+            return;
+        }
+    };
+    init_handler();
+}
 
 /// Send ping message to `WasmVM`. Successful result should be
 /// incremented value. Useful for most simple request/response
@@ -13,8 +71,22 @@ use crate::statuses::Result;
 /// let respond = ping(10);
 /// assert_eq!(respond.unwrap(), 11);
 /// ```
-pub fn ping(msg: usize) -> Result<i64> {
+pub fn ping(msg: usize) -> FunctionResult {
     return unsafe { Ok(external::__ping(msg)) };
+}
+
+/// Return incremented result from all previous invoke that functions.
+///
+/// Useful for calculating some incremented state.
+///
+/// # Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::utils::inc;
+/// let respond = inc();
+/// assert_eq!(respond.unwrap(), 11);
+/// ```
+pub fn inc() -> FunctionResult {
+    return unsafe { Ok(external::__inc()) };
 }
 
 /// Send debug message to `WasmVM`. It's convenient

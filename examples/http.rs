@@ -1,4 +1,4 @@
-// Example for `http_get` WasmVM function.
+/// Example for `http_get` WasmVM function.
 use std::collections::HashMap;
 use xpx_supercontracts_sdk::http::{http_get, HttpRequest};
 
@@ -7,7 +7,7 @@ pub extern "C" fn app_main() -> i64 {
     let mut headers: HashMap<String, String> = HashMap::new();
     headers.insert("content-type".to_string(), "text/html".to_string());
     let req = HttpRequest {
-        url: "http://google.com/".to_string(),
+        url: "https://s.dou.ua/files/dou-200x200.png".to_string(),
         headers: headers,
     };
     let resp = http_get(&req);

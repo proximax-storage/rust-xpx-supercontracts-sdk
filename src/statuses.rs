@@ -2,6 +2,8 @@
 
 use std::result;
 pub type Result<T> = result::Result<T, self::Error>;
+pub type FunctionResult = Result<i64>;
+pub type MultipleFunctionResult = Result<Vec<u8>>;
 
 /// Success status of function execution
 /// when function don't has own result.
@@ -46,8 +48,11 @@ impl From<Error> for ExecutionError {
     }
 }
 
+#[repr(i8)]
 #[derive(Debug, Fail)]
 pub enum Error {
     #[fail(display = "Failed serialize the given data structure as a JSON byte ")]
     SerializeJson = -1,
+    #[fail(display = "Failed deserialize the given byte data to structure")]
+    DeserializeJson = -2,
 }

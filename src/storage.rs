@@ -4,7 +4,7 @@
 //! So it should be relative path like: `path/to/my/file.json`
 
 use crate::external;
-use crate::statuses::Result;
+use crate::statuses::{FunctionResult, MultipleFunctionResult};
 
 /// Save data to Storage. Return result status.
 /// File always located inside `/root/supercontracts/` directory.
@@ -17,7 +17,7 @@ use crate::statuses::Result;
 /// let result_status = storage_save(&"some_file.json".to_string(), data);
 /// assert_eq!(result_status.unwrap(), 0);
 /// ```
-pub fn storage_save(file_name: &String, data: &[u8]) -> Result<i64> {
+pub fn storage_save(file_name: &String, data: &[u8]) -> FunctionResult {
     let file_name = file_name.as_bytes();
     return unsafe {
         let res = external::save_to_storage(
@@ -41,7 +41,7 @@ pub fn storage_save(file_name: &String, data: &[u8]) -> Result<i64> {
 /// let file_data = storage_get(&"some_file.json".to_string());
 /// assert_eq!(file_data.unwrap(), vec![0]);
 /// ```
-pub fn storage_get(file_name: &String) -> Result<Vec<u8>> {
+pub fn storage_get(file_name: &String) -> MultipleFunctionResult {
     let file_name = file_name.as_bytes();
     let data: &mut Vec<u8> = &mut vec![];
     return unsafe {
@@ -67,7 +67,7 @@ pub fn storage_get(file_name: &String) -> Result<Vec<u8>> {
 /// let result_status = save_result(&"some_file.json".to_string(), data);
 /// assert_eq!(result_status.unwrap(), 0);
 /// ```
-pub fn save_result(file_name: &String, data: &[u8]) -> Result<i64> {
+pub fn save_result(file_name: &String, data: &[u8]) -> FunctionResult {
     let file_name = file_name.as_bytes();
     return unsafe {
         let res = external::save_sc_result(
