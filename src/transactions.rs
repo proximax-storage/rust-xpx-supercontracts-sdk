@@ -693,6 +693,28 @@ pub fn get_transaction_effective_fee(params: &GetTransactionEffectiveFee) -> Res
     call_external_func(params, external::get_transaction_effective_fee)
 }
 
+/// Get data via **GetMosaicID**
+///
+/// ## Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::transactions::{
+///		get_mosaic_id,
+/// };
+/// use xpx_supercontracts_sdk::transactions_type::{GetMosaicID};
+///
+/// let params = GetMosaicID{
+///     nonce: 0,
+/// 	owner_public_key: String::from("some_id"),
+/// };
+/// // Get info data
+/// let result = get_mosaic_id(&params);
+/// let info = result.unwrap();
+/// ```
+///
+pub fn get_mosaci_id(params: &GetMosaicID) -> Result<i64> {
+    call_external_func(params, external::get_mosaic_id)
+}
+
 /// Get data current SuperContract data
 ///
 /// ## Examples
