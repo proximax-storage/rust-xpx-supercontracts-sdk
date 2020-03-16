@@ -1,6 +1,6 @@
 [package]
 name = "xpx-supercontracts-sdk"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["ProxymaX Core Development Team", "Evgeny Ukhanov <mrlsd@ya.ru>"]
 description = "ProximaX Supercontracts Rust SDK"
 edition = "2018"

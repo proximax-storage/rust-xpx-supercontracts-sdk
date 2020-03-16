@@ -375,8 +375,14 @@ pub struct GetTransactionEffectiveFee {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct GetMosaicID {
-	nonce: u32,
-	owner_public_key: String,
+	pub nonce: u32,
+	pub owner_public_key: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct GetInitiatorPubKey {
+	pub public_key: String,
 }
 
 /// # Transactions

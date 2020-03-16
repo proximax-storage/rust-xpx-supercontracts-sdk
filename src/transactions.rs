@@ -742,3 +742,32 @@ pub fn get_supercontract() -> Result<SuperContract> {
     }
     Ok(result.unwrap())
 }
+
+/// Get initiator pubkey data of initial Execute action
+///
+/// ## Examples
+/// ```rust,no_run
+/// use xpx_supercontracts_sdk::transactions::{
+///		get_initiator_pubkey,
+/// };
+/// 
+/// // Get info data
+/// let result = get_initiator_pubkey();
+/// let info = result.unwrap();
+/// ```
+///
+pub fn get_initiator_pubkey() -> Result<String> {
+    let fn_result = unsafe {
+        let fn_result: &mut Vec<u8> = &mut vec![];
+        let fn_result_len = external::get_initiator_pubkey(fn_result.as_mut_ptr());
+        let fn_data_bytes = fn_result.get_unchecked_mut(0..fn_result_len as usize);
+        fn_data_bytes.to_vec()
+    };
+
+    let result = serde_json::from_slice(&fn_result[..]);
+    if result.is_err() {
+        return Err(Error::DeserializeJson);
+    }
+    let initiator: GetInitiatorPubKey = result.unwrap();
+    Ok(initiator.public_key)
+}
