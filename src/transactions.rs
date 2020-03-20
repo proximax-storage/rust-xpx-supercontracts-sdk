@@ -711,7 +711,7 @@ pub fn get_transaction_effective_fee(params: &GetTransactionEffectiveFee) -> Res
 /// let info = result.unwrap();
 /// ```
 ///
-pub fn get_mosaci_id(params: &GetMosaicID) -> Result<i64> {
+pub fn get_mosaic_id(params: &GetMosaicID) -> Result<u64> {
     call_external_func(params, external::get_mosaic_id)
 }
 
