@@ -63,4 +63,5 @@ extern "C" {
 		data: *mut u8,
 	) -> i64;
 	pub fn get_supercontract(data: *mut u8) -> i64;
+	pub fn get_initiator_pubkey(data: *mut u8) -> i64;
 }
