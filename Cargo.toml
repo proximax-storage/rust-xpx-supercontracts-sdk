@@ -27,10 +27,6 @@ name = "ping"
 crate-type = ["cdylib"]
 
 [[example]]
-name = "ico"
-crate-type = ["cdylib"]
-
-[[example]]
 name = "common"
 crate-type = ["cdylib"]
 
