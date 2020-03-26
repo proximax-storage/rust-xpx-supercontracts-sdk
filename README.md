@@ -39,7 +39,7 @@ See `Docs` directory.
 
 ## Exampels
 * See `eamples` directory
-* Build specific exmaple: `cargo build --target wasm32-unknown-unknown --example ping`
+* Build specific exmaple: `cargo build --target wasm32-unknown-unknown --example ping --release`
 
 ### License: Apache 2.0
 Copyright (c) 2019 ProximaX Limited

@@ -22,7 +22,7 @@ pub extern "C" fn main() -> i64 {
         return Error::SerializeJson as i64;
     }
     let data_bytes = data_bytes.unwrap();
-    let status = storage_save(&file_name, &data_bytes[..]);
+    let status = save_result(&file_name, &data_bytes[..]);
     if let Err(err) = status {
         return err as i64;
     }

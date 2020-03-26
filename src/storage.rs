@@ -6,30 +6,6 @@
 use crate::external;
 use crate::statuses::{FunctionResult, MultipleFunctionResult};
 
-/// Save data to Storage. Return result status.
-/// File always located inside `/root/supercontracts/` directory.
-/// So it should be relative path like: `path/to/my/file.json`
-///
-/// # Examples
-/// ```rust,no_run
-/// let data = "some_data".as_bytes();
-/// use xpx_supercontracts_sdk::storage::storage_save;
-/// let result_status = storage_save(&"some_file.json".to_string(), data);
-/// assert_eq!(result_status.unwrap(), 0);
-/// ```
-pub fn storage_save(file_name: &String, data: &[u8]) -> FunctionResult {
-    let file_name = file_name.as_bytes();
-    return unsafe {
-        let res = external::save_to_storage(
-            file_name.as_ptr(),
-            file_name.len(),
-            data.as_ptr(),
-            data.len(),
-        );
-        Ok(res)
-    };
-}
-
 /// Read file from Storage and return file data bytes.
 /// File always located inside `/root/supercontracts/` directory.
 /// So it should be relative path like: `path/to/my/file.json`
