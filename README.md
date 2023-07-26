@@ -10,7 +10,7 @@ All Supercontracts stuff include in dependency:
 xpx_supercontracts_sdk = "0.1"
 ```
 
-To start new development new Supercontrac follow this steps:
+To start new development new Supercontract follow this steps:
 1. `cargo new sc-app`
 
 2. Add to `Cargo.toml`:
